@@ -1,0 +1,1 @@
+<input type="submit" <?= HTML::attributes($attributes) ?>/>
