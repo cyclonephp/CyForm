@@ -81,6 +81,16 @@ class CyForm_Model {
         $this->attributes[$key] = $value;
         return $this;
     }
+    
+    /**
+     * @param string $key
+     * @param string $value
+     * @return CyForm_Model
+     */
+    public function attr($key, $value) {
+        $this->attributes[$key] = $value;
+        return $this;
+    }
 
     /**
      * @param CyForm_Model_Field $field

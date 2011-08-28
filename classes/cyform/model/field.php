@@ -13,6 +13,8 @@ class CyForm_Model_Field {
     public $label;
 
     public $description;
+    
+    public $attributes = array();
 
     public $view;
 
@@ -120,11 +122,36 @@ class CyForm_Model_Field {
 
     /**
      *
-     * @param string $on_edit
+     * @param mixed $on_edit
      * @return CyForm_Model_Field
      */
     public function on_edit($on_edit) {
         $this->on_edit = $on_edit;
+        return $this;
+    }
+    
+    public function attributes($attributes) {
+        $this->attributes = $attributes;
+        return $this;
+    }
+    
+    /**
+     * @param string $key
+     * @param string $value
+     * @return CyForm_Model
+     */
+    public function attribute($key, $value) {
+        $this->attributes[$key] = $value;
+        return $this;
+    }
+    
+    /**
+     * @param string $key
+     * @param string $value
+     * @return CyForm_Model
+     */
+    public function attr($key, $value) {
+        $this->attributes[$key] = $value;
         return $this;
     }
 }
