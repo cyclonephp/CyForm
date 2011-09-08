@@ -1,6 +1,8 @@
 <?php
 
-namespace cyform\model\field;
+namespace cyclone\cyform\model\field;
+
+use cyclone as cy;
 
 /**
  * @author Bence Eros
@@ -28,7 +30,7 @@ class ItemList extends Basic {
      * @param CyForm_Model_DataSource $data_source
      * @return CyForm_Model_Field_List
      */
-    public function source(\cyform\model\DataSource $data_source) {
+    public function source(cy\cyform\model\DataSource $data_source) {
         $this->data_source = $data_source;
         return $this;
     }
@@ -37,7 +39,7 @@ class ItemList extends Basic {
      * @throws CyForm_Exception
      */
     public function  type($type) {
-        throw new CyForm_Exception('the type attribute of lists is immutable');
+        throw new cy\cyform\Exception('the type attribute of lists is immutable');
     }
 
     /**

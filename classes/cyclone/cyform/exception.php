@@ -1,6 +1,6 @@
 <?php
 
-namespace cyform;
+namespace cyclone\cyform;
 
 /**
  * @author Bence Eros <crystal@cyclonephp.com>

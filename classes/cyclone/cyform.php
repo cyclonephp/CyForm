@@ -1,5 +1,7 @@
 <?php
 
+namespace cyclone;
+
 /**
  * @author Bence Eros <crystal@cyclonephp.com>
  * @package CyForm
@@ -20,7 +22,7 @@ class CyForm {
      * @return CyForm_Model_Field
      */
     public static function field($name = NULL, $type = 'text') {
-        $candidate = '\\cyform\\model\\field\\' . $type;
+        $candidate = '\\cyclone\\cyform\\model\\field\\' . $type;
         if (class_exists($candidate)) {
             $class = $candidate;
             return new $class($name);
@@ -106,7 +108,7 @@ class CyForm {
      */
     protected function init($load_data_sources) {
         foreach($this->_model->fields as $name => $field_model) {
-            $class = '\\cyform\\field\\'. $field_model->type;
+            $class = '\\cyclone\\cyform\\field\\'. $field_model->type;
             if (class_exists($class)) {
                 $field = new $class($this, $name, $field_model, $this->_cfg);
             } else  {
@@ -131,10 +133,10 @@ class CyForm {
         $theme = $this->_model->theme;
         try {
             \cyclone\AssetPool::inst()->add_asset($theme, 'css');
-        } catch (Exception $ex) {}
+        } catch (\Exception $ex) {}
         try {
             \cyclone\AssetPool::inst()->add_asset($theme, 'js');
-        } catch (Exception $ex) {}
+        } catch (\Exception $ex) {}
     }
 
     /**

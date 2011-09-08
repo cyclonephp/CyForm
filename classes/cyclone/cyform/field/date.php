@@ -1,6 +1,8 @@
 <?php
 
-namespace cyform\field;
+namespace cyclone\cyform\field;
+
+use cyclone as cy;
 
 /**
  * @author Bence Eros <crystal@cyclonephp.com>
@@ -22,7 +24,7 @@ class Date extends Basic {
         'day' => null
     );
 
-    public function  __construct(\CyForm $form, $name, \cyform\model\field\Basic $model, $cfg) {
+    public function  __construct(cy\CyForm $form, $name, cy\cyform\model\field\Basic $model, $cfg) {
         parent::__construct($form, $name, $model, 'date', $cfg);
     }
 

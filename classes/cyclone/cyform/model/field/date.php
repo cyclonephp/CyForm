@@ -1,6 +1,6 @@
 <?php
 
-namespace cyform\model\field;
+namespace cyclone\cyform\model\field;
 
 class Date extends Basic {
 

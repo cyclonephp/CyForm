@@ -1,6 +1,8 @@
 <?php
 
-namespace cyform\field;
+namespace cyclone\cyform\field;
+
+use cyclone as cy;
 
 /**
  * @author Bence Eros <crystal@cyclonephp.com>
@@ -8,7 +10,7 @@ namespace cyform\field;
  */
 class Textarea extends Basic {
 
-    public function  __construct(\CyForm $form, $name, \cyform\model\field\Basic $model, $cfg) {
+    public function  __construct(cy\CyForm $form, $name, cy\cyform\model\field\Basic $model, $cfg) {
         parent::__construct($form, $name, $model, 'textarea', $cfg);
     }
 

@@ -1,6 +1,8 @@
 <?php
 
-namespace cyform\field;
+namespace cyclone\cyform\field;
+
+use cyclone as cy;
 
 /**
  * @author Bence Eros <crystal@cyclonephp.com>
@@ -44,8 +46,8 @@ class Basic {
      * @param array $model the field definition
      * @param string $type the type of the HTML input
      */
-    public function  __construct(\CyForm $form, $name
-            , \cyform\model\field\Basic $model, $cfg) {
+    public function  __construct(cy\CyForm $form, $name
+            , cy\cyform\model\field\Basic $model, $cfg) {
         $this->_form = $form;
         $this->_model = $model;
         $this->_cfg = $cfg;
@@ -165,7 +167,7 @@ class Basic {
 
     protected function exec_callback_validator($validator, $details) {
         if ( ! is_array($details))
-            throw new CyForm_Exception($details.' is not an array');
+            throw new cy\cyform\Exception($details.' is not an array');
 
         if ( ! array_key_exists('params', $details)) {
             $params = array();
@@ -229,7 +231,7 @@ class Basic {
             $view = new \cyclone\View($this->_form->_model->theme
                 .DIRECTORY_SEPARATOR.$this->_model->view,
                 (array) $this->_model);
-        } catch (\Kohana_View_Exception $ex) {
+        } catch (\cyclone\Kohana_View_Exception $ex) {
             $view = new \cyclone\View(\CyForm::DEFAULT_THEME . DIRECTORY_SEPARATOR
                     . $this->_model->view, (array) $this->_model);
         }
