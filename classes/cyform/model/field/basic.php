@@ -1,10 +1,12 @@
 <?php
 
+namespace cyform\model\field;
+
 /**
  * @author Bence Eros
  * @package CyForm
  */
-class CyForm_Model_Field {
+class Basic {
 
     public $name;
 

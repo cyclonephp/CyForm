@@ -1,12 +1,14 @@
 <?php
 
+namespace cyform\field;
+
 /**
  * @author Bence Eros <crystal@cyclonephp.com>
  * @package CyForm
  */
-class CyForm_Field_Submit extends CyForm_Field {
+class Submit extends Basic {
 
-    public function  __construct(CyForm $form, $name, CyForm_Model_Field $model, $cfg) {
+    public function  __construct(\CyForm $form, $name, \cyform\model\field\Basic $model, $cfg) {
         parent::__construct($form, $name, $model, 'submit', $cfg);
     }
 

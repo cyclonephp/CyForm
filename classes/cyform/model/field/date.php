@@ -1,6 +1,8 @@
 <?php
 
-class CyForm_Model_Field_Date extends CyForm_Model_Field {
+namespace cyform\model\field;
+
+class Date extends Basic {
 
 
     public $min_date = array('year' => '1900', 'month' => '01', 'day' => '01');

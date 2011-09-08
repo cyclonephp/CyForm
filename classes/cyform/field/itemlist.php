@@ -1,10 +1,16 @@
 <?php
 
+namespace cyform\field;
+
 /**
  * @author Bence Eros <crystal@cyclonephp.com>
  * @package CyForm
  */
-class CyForm_Field_List extends CyForm_Field {
+class ItemList extends Basic {
+
+    public function  __construct(\CyForm $form, $name, \cyform\model\field\Basic $model, $cfg) {
+        parent::__construct($form, $name, $model, 'itemlist', $cfg);
+    }
 
     public function  load_data_source() {
         if ( ! is_null($this->_model->data_source)) {

@@ -1,10 +1,12 @@
 <?php
 
+namespace cyform\model;
+
 /**
  * @author Bence Eros
  * @package CyForm
  */
-class CyForm_Model_DataSource {
+class DataSource {
 
     public $callback;
 

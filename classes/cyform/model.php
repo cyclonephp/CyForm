@@ -1,10 +1,12 @@
 <?php
 
+namespace cyform;
+
 /**
  * @author Bence Eros
  * @package CyForm
  */
-class CyForm_Model {
+class Model {
 
     public $result_type = 'array';
 
@@ -96,7 +98,7 @@ class CyForm_Model {
      * @param CyForm_Model_Field $field
      * @return CyForm_Model
      */
-    public function field(CyForm_Model_Field $field) {
+    public function field(model\field\Basic $field) {
         if (is_null($field->name)) {
             $this->fields []= $field;
         } else {

@@ -1,10 +1,12 @@
 <?php
 
+namespace cyform\field;
+
 /**
  * @author Bence Eros <crystal@cyclonephp.com>
  * @package CyForm
  */
-class CyForm_Field {
+class Basic {
 
     /**
      *
@@ -42,8 +44,8 @@ class CyForm_Field {
      * @param array $model the field definition
      * @param string $type the type of the HTML input
      */
-    public function  __construct(CyForm $form, $name
-            , CyForm_Model_Field $model, $cfg) {
+    public function  __construct(\CyForm $form, $name
+            , \cyform\model\field\Basic $model, $cfg) {
         $this->_form = $form;
         $this->_model = $model;
         $this->_cfg = $cfg;
@@ -91,9 +93,9 @@ class CyForm_Field {
      * disabled on the client side therefore weren't submitted.
      */
     public function pick_input(&$src, &$saved_data = array()) {
-        $this->value = Arr::get($src, $this->_model->name);
+        $this->value = \Arr::get($src, $this->_model->name);
         if (null === $this->value) {
-            $this->set_data(Arr::get($saved_data, $this->_model->name));
+            $this->set_data(\Arr::get($saved_data, $this->_model->name));
         }
         if ('' === $this->value) {
             $this->value = $this->_model->on_empty;
@@ -138,7 +140,7 @@ class CyForm_Field {
     protected function exec_basic_validator($validator, $details) {
         $callback = array('Validate', $validator);
         if (is_array($details)) {
-            $params = Arr::get($details, 'params', array());
+            $params = \Arr::get($details, 'params', array());
             if (TRUE === $params) {
                 $params = array($this->value);
             } else {
@@ -153,7 +155,7 @@ class CyForm_Field {
         $result = call_user_func_array($callback, $params);
         if ( ! $result) {
             if ( ! isset($error)) {
-                $error = __(Kohana::config('cyform.default_error_prefix') . $validator);
+                $error = __(\Config::inst()->get('cyform.default_error_prefix') . $validator);
             }
             $this->add_validation_error($validator, $error, $params);
             return FALSE;
@@ -224,11 +226,11 @@ class CyForm_Field {
     public function render() {
         $this->before_rendering();
         try {
-            $view = new View($this->_form->_model->theme
+            $view = new \View($this->_form->_model->theme
                 .DIRECTORY_SEPARATOR.$this->_model->view,
                 (array) $this->_model);
-        } catch (Kohana_View_Exception $ex) {
-            $view = new View(CyForm::DEFAULT_THEME . DIRECTORY_SEPARATOR
+        } catch (\Kohana_View_Exception $ex) {
+            $view = new \View(\CyForm::DEFAULT_THEME . DIRECTORY_SEPARATOR
                     . $this->_model->view, (array) $this->_model);
         }
         return $view->render();

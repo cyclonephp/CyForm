@@ -1,12 +1,14 @@
 <?php
 
+namespace cyform\field;
+
 /**
  * @author Bence Eros <crystal@cyclonephp.com>
  * @package CyForm
  */
-class CyForm_Field_Textarea extends CyForm_Field {
+class Textarea extends Basic {
 
-    public function  __construct(CyForm $form, $name, CyForm_Model_Field $model, $cfg) {
+    public function  __construct(\CyForm $form, $name, \cyform\model\field\Basic $model, $cfg) {
         parent::__construct($form, $name, $model, 'textarea', $cfg);
     }
 

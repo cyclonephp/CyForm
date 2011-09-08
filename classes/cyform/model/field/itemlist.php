@@ -1,12 +1,14 @@
 <?php
 
+namespace cyform\model\field;
+
 /**
  * @author Bence Eros
  * @package CyForm
  */
-class CyForm_Model_Field_List extends CyForm_Model_Field {
+class ItemList extends Basic {
 
-    public $type = 'list';
+    public $type = 'itemlist';
 
     /**
      *
@@ -26,7 +28,7 @@ class CyForm_Model_Field_List extends CyForm_Model_Field {
      * @param CyForm_Model_DataSource $data_source
      * @return CyForm_Model_Field_List
      */
-    public function source(CyForm_Model_DataSource $data_source) {
+    public function source(\cyform\model\DataSource $data_source) {
         $this->data_source = $data_source;
         return $this;
     }

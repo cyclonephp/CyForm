@@ -1,14 +1,19 @@
 <?php
 
+namespace cyform\field;
+
+use cyform;
+use cyform\model\field;
+
 /**
  * @author Bence Eros <crystal@cyclonephp.com>
  * @package CyForm
  */
-class CyForm_Field_Checkbox extends CyForm_Field {
+class Checkbox extends Basic {
 
-    public function  __construct(CyForm $form, $name, CyForm_Model_Field $model, $cfg) {
+    public function  __construct(\CyForm $form, $name, field\Basic $model, $cfg) {
         if ($model->type != 'checkbox')
-            throw new CyForm_Exception('parameter $model->type must be checkbox');
+            throw new cyform\Exception('parameter $model->type must be checkbox');
         parent::__construct($form, $name, $model, $cfg);
     }
 

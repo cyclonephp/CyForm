@@ -4,13 +4,11 @@
 class CyForm_Test extends Kohana_Unittest_TestCase {
 
     /**
-     * @expectedException CyForm_Exception
+     * @expectedException \cyform\Exception
      */
     public function testConstructor() { 
         $form1 = new CyForm('examples/basic');
-        $form2 = new CyForm(array(
-            'fields' => array()
-        ));
+        $form2 = new CyForm(CyForm::model());
         $form3 = new CyForm('does not exist');
     }
 
@@ -19,7 +17,7 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
                 ->field(CyForm::field('basic', 'text'))
         );
         $this->assertEquals(1, count($form->_fields));
-        $this->assertTrue($form->_fields['basic'] instanceof CyForm_Field);
+        $this->assertTrue($form->_fields['basic'] instanceof \cyform\field\Basic);
     }
 
     /**
@@ -28,11 +26,11 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
      */
     public function testExplicitInput($field_type, $input_class) {
         $form = new CyForm(CyForm::model()->field(CyForm::field('name', $field_type)));
-        $this->assertTrue($form->_fields['name'] instanceof $input_class);
+        $this->assertInstanceOf($input_class, $form->_fields['name']);
     }
 
     public function testInputCheckbox() {
-        $checkbox = new CyForm_Field_Checkbox(new CyForm(CyForm::model()), ''
+        $checkbox = new \cyform\field\Checkbox(new CyForm(CyForm::model()), ''
                 , CyForm::field('chb', 'checkbox')
                 , Config::inst()->get('cyform'));
 
@@ -49,13 +47,11 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
         $this->assertFalse($checkbox->get_data());
     }
 
-    /**
-     *
-     * @dataProvider providerDataSource
-     */
-    public function testDataSourceLoading($data_source) {
-        $form = new CyForm(CyForm::model()->field(CyForm::field('name', 'list')
-                ->source($data_source)));
+    public function testDataSourceLoading() {
+        $form = new CyForm(CyForm::model()->field(CyForm::field('name', 'itemlist')
+                ->source(CyForm::source(array($this, 'mockDataSource'))
+                    ->val('id')
+                    ->text('text'))));
         
         foreach ( $this->mockDataSource() as $row) {
             $this->assertEquals($form->_fields['name']->_model->items[$row['id']], $row['text']);
@@ -92,7 +88,7 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
         $form = new CyForm(CyForm::model()
                 ->field(CyForm::field('name1', 'text'))
                 ->field(CyForm::field('name2', 'checkbox'))
-                ->field(CyForm::field('name3', 'list')
+                ->field(CyForm::field('name3', 'itemlist')
                         ->items(array(
                             'val1' => 'text1',
                             'val2' => 'text2'
@@ -221,7 +217,7 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
         $this->assertEquals($result, $after_data);
     }
 
-    public function providerEdit() {
+    public static function providerEdit() {
         $rval = array();
         $fields = array(
             CyForm::field('name1', 'text'),
@@ -264,22 +260,6 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
         );
     }
 
-    public function providerDataSource() {
-        return array(
-            array(CyForm::source(array($this, 'mockDataSource'))
-                ->val('id')
-                ->text('text'))
-        );
-        return array(
-            array(
-                array(
-                    'callback' => array($this, 'mockDataSource'),
-                    'val_field' => 'id',
-                    'text_field' => 'text'
-                )
-            )
-        );
-    }
 
     public function mockDataSource() {
         return array(
@@ -290,14 +270,14 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
 
     public function providerExplicitInput() {
         return array(
-            array('text', 'CyForm_Field'),
-            array('hidden', 'CyForm_Field'),
-            array('checkbox', 'CyForm_Field_Checkbox'),
-            array('password', 'CyForm_Field'),
-            array('list', 'CyForm_Field_List'),
-            array('submit', 'CyForm_Field'),
-            array('textarea', 'CyForm_Field'),
-            array('date', 'CyForm_Field_Date')
+            array('text', '\\cyform\\field\\Basic'),
+            array('hidden', '\\cyform\\field\\Basic'),
+            array('checkbox', '\\cyform\\field\\Checkbox'),
+            array('password', '\\cyform\\field\\Basic'),
+            array('itemlist', '\\cyform\\field\\ItemList'),
+            array('submit', '\\cyform\\field\\Basic'),
+            array('textarea', '\\cyform\\field\\Basic'),
+            array('date', '\\cyform\\field\\Date')
         );
     }
 

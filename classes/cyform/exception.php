@@ -1,7 +1,9 @@
 <?php
 
+namespace cyform;
+
 /**
  * @author Bence Eros <crystal@cyclonephp.com>
  * @package CyForm
  */
-class CyForm_Exception extends Exception {}
+class Exception extends \Exception {}

@@ -10,7 +10,7 @@ class CyForm {
      * @return CyForm_Model
      */
     public static function model() {
-        return new CyForm_Model;
+        return new cyform\Model;
     }
 
     /**
@@ -20,12 +20,12 @@ class CyForm {
      * @return CyForm_Model_Field
      */
     public static function field($name = NULL, $type = 'text') {
-        $candidate = 'CyForm_Model_Field_' . $type;
+        $candidate = '\\cyform\\model\\field\\' . $type;
         if (class_exists($candidate)) {
             $class = $candidate;
             return new $class($name);
-        } 
-        return new CyForm_Model_Field($type, $name);
+        }
+        return new cyform\model\field\Basic($type, $name);
     }
 
     /**
@@ -33,7 +33,7 @@ class CyForm {
      * @return CyForm_Model_DataSource
      */
     public static function source($callback) {
-        return new CyForm_Model_DataSource($callback);
+        return new cyform\model\DataSource($callback);
     }
 
     /**
@@ -43,7 +43,7 @@ class CyForm {
     public static function get_model($name) {
         $file = FileSystem::find_file('forms/' . $name . '.php');
         if (FALSE === $file)
-            throw new CyForm_Exception("form not found: $name");
+            throw new cyform\Exception("form not found: $name");
 
         return require $file;
     }
@@ -89,8 +89,8 @@ class CyForm {
             $model = self::get_model($model);
         }
 
-        if (  ! ($model instanceof CyForm_Model))
-            throw new CyForm_Exception('invalid model');
+        if (  ! ($model instanceof cyform\Model))
+            throw new cyform\Exception('invalid model');
 
         $this->_model = $model;
 
@@ -106,11 +106,11 @@ class CyForm {
      */
     protected function init($load_data_sources) {
         foreach($this->_model->fields as $name => $field_model) {
-            $class = 'CyForm_Field_'.ucfirst($field_model->type);
+            $class = '\\cyform\\field\\'. $field_model->type;
             if (class_exists($class)) {
                 $field = new $class($this, $name, $field_model, $this->_cfg);
             } else  {
-                $field = new CyForm_Field($this, $name, $field_model, $this->_cfg);
+                $field = new cyform\field\Basic($this, $name, $field_model, $this->_cfg);
             }
             
             if ($load_data_sources) {
@@ -145,7 +145,7 @@ class CyForm {
      */
     public function set_data($src, $save = true) {
         foreach ($src as $k => $v) {
-            if (array_key_exists($k, $this->_fields)) {
+            if (isset($this->_fields[$k])) {
                 $this->_fields[$k]->set_data($v);
             }
         }
@@ -183,8 +183,8 @@ class CyForm {
      */
     protected function get_saved_data($progress_id) {
         $sess_key = $this->_cfg['session_key'];
-        if (array_key_exists($sess_key, $_SESSION)
-                && array_key_exists($progress_id, $_SESSION[$sess_key]['progress'])) {
+        if (isset($_SESSION[$sess_key])
+                && isset($_SESSION[$sess_key]['progress'][$progress_id])) {
             $this->_progress_id = $progress_id;
             return $_SESSION[$sess_key]['progress'][$progress_id];
         }
@@ -200,7 +200,7 @@ class CyForm {
      */
     protected function create_progress_id() {
         $sess_key = $this->_cfg['session_key'];
-        if ( ! array_key_exists($sess_key, $_SESSION)) {
+        if ( ! isset($_SESSION[$sess_key])) {
             $_SESSION[$sess_key] = array(
                 'progress' => array(),
                 'progress_counter' => 0
@@ -215,10 +215,10 @@ class CyForm {
         $_SESSION[$sess_key]['progress'][$progress_id] = array();
 
         // creating hidden input for storing unique form ID
-        $field_model = new CyForm_Model_Field('hidden'
+        $field_model = new cyform\model\field\Basic('hidden'
              , $this->_cfg['progress_key']);
 
-        $field = new CyForm_Field($this, $this->_cfg['progress_key']
+        $field = new cyform\field\Basic($this, $this->_cfg['progress_key']
                 , $field_model, $this->_cfg);
         $field->set_data($progress_id);
         // and adding it to the form inputs
@@ -237,7 +237,7 @@ class CyForm {
      * @param array $src
      */
     public function set_input($src, $validate = true) {
-        if (array_key_exists($this->_cfg['progress_key'], $src)) {
+        if (isset($src[$this->_cfg['progress_key']])) {
             $saved_data = $this->get_saved_data($src[$this->_cfg['progress_key']]);
         } else {
             $saved_data = array();
@@ -337,13 +337,13 @@ class CyForm {
     public function render() {
         $this->before_rendering();
         try {
-            $view = new View($this->_model->theme
+            $view = new \View($this->_model->theme
                 .DIRECTORY_SEPARATOR.$this->_model->view, array(
                     'model' => $this->_model,
                     'fields' => $this->_fields
                 ));
-        } catch (Kohana_View_Exception $ex) {
-            $view = new View(self::DEFAULT_THEME . DIRECTORY_SEPARATOR
+        } catch (\Kohana_View_Exception $ex) {
+            $view = new \View(self::DEFAULT_THEME . DIRECTORY_SEPARATOR
                     . $this->_model->view, array(
                     'model' => $this->_model,
                     'fields' => $this->_fields
@@ -382,7 +382,7 @@ class CyForm {
     public function hide_fields($fields) {
         foreach ($fields as $field_name) {
             if ( ! isset($this->_fields[$field_name]))
-                throw new CyForm_Exception("Can't hide field '$field_name' in the form since it does not exist");
+                throw new Exception("Can't hide field '$field_name' in the form since it does not exist");
             unset($this->_fields[$field_name]);
         }
         return $this;
