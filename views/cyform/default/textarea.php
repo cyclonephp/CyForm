@@ -7,6 +7,6 @@
     <span class="descr"> <?= $description ?></span>
 <? endif; ?>
     </label>
-    <textarea <?= HTML::attributes($attributes) ?>><?= $value ?></textarea>
+    <textarea <?= \cyclone\HTML::attributes($attributes) ?>><?= $value ?></textarea>
     <div class="clear"></div>
 </div>

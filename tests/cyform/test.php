@@ -32,7 +32,7 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
     public function testInputCheckbox() {
         $checkbox = new \cyform\field\Checkbox(new CyForm(CyForm::model()), ''
                 , CyForm::field('chb', 'checkbox')
-                , Config::inst()->get('cyform'));
+                , \cyclone\Config::inst()->get('cyform'));
 
         $arr = array(
             'chb' => 'on'
@@ -189,7 +189,7 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
      */
     public function testEdit(array $fields, array $before_data
             , $progress_id_required, $input, array $after_data) {
-        $cfg = Config::inst()->get('cyform');
+        $cfg = \cyclone\Config::inst()->get('cyform');
         unset($_SESSION[$cfg['progress_key']]);
         $form_model = CyForm::model();
         $form_model->fields = $fields;

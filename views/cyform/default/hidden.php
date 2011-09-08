@@ -1,1 +1,1 @@
-<input<?= HTML::attributes($attributes) ?>/>
+<input<?= \cyclone\HTML::attributes($attributes) ?>/>

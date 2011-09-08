@@ -41,7 +41,7 @@ class CyForm {
      * @return CyForm_Model
      */
     public static function get_model($name) {
-        $file = FileSystem::find_file('forms/' . $name . '.php');
+        $file = \cyclone\FileSystem::find_file('forms/' . $name . '.php');
         if (FALSE === $file)
             throw new cyform\Exception("form not found: $name");
 
@@ -94,7 +94,7 @@ class CyForm {
 
         $this->_model = $model;
 
-        $this->_cfg = Config::inst()->get('cyform');
+        $this->_cfg = \cyclone\Config::inst()->get('cyform');
         $this->init($load_data_sources);
         $this->add_assets();
     }
@@ -130,10 +130,10 @@ class CyForm {
         }
         $theme = $this->_model->theme;
         try {
-            Asset_Pool::inst()->add_asset($theme, 'css');
+            \cyclone\AssetPool::inst()->add_asset($theme, 'css');
         } catch (Exception $ex) {}
         try {
-            Asset_Pool::inst()->add_asset($theme, 'js');
+            \cyclone\AssetPool::inst()->add_asset($theme, 'js');
         } catch (Exception $ex) {}
     }
 
@@ -337,13 +337,13 @@ class CyForm {
     public function render() {
         $this->before_rendering();
         try {
-            $view = new \View($this->_model->theme
+            $view = new \cyclone\View($this->_model->theme
                 .DIRECTORY_SEPARATOR.$this->_model->view, array(
                     'model' => $this->_model,
                     'fields' => $this->_fields
                 ));
-        } catch (\Kohana_View_Exception $ex) {
-            $view = new \View(self::DEFAULT_THEME . DIRECTORY_SEPARATOR
+        } catch (Kohana_View_Exception $ex) {
+            $view = new \cyclone\View(self::DEFAULT_THEME . DIRECTORY_SEPARATOR
                     . $this->_model->view, array(
                     'model' => $this->_model,
                     'fields' => $this->_fields

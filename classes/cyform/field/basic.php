@@ -93,9 +93,9 @@ class Basic {
      * disabled on the client side therefore weren't submitted.
      */
     public function pick_input(&$src, &$saved_data = array()) {
-        $this->value = \Arr::get($src, $this->_model->name);
+        $this->value = \cyclone\Arr::get($src, $this->_model->name);
         if (null === $this->value) {
-            $this->set_data(\Arr::get($saved_data, $this->_model->name));
+            $this->set_data(\cyclone\Arr::get($saved_data, $this->_model->name));
         }
         if ('' === $this->value) {
             $this->value = $this->_model->on_empty;
@@ -138,9 +138,9 @@ class Basic {
     }
 
     protected function exec_basic_validator($validator, $details) {
-        $callback = array('Validate', $validator);
+        $callback = array('\cyclone\Validate', $validator);
         if (is_array($details)) {
-            $params = \Arr::get($details, 'params', array());
+            $params = \cyclone\Arr::get($details, 'params', array());
             if (TRUE === $params) {
                 $params = array($this->value);
             } else {
@@ -226,11 +226,11 @@ class Basic {
     public function render() {
         $this->before_rendering();
         try {
-            $view = new \View($this->_form->_model->theme
+            $view = new \cyclone\View($this->_form->_model->theme
                 .DIRECTORY_SEPARATOR.$this->_model->view,
                 (array) $this->_model);
         } catch (\Kohana_View_Exception $ex) {
-            $view = new \View(\CyForm::DEFAULT_THEME . DIRECTORY_SEPARATOR
+            $view = new \cyclone\View(\CyForm::DEFAULT_THEME . DIRECTORY_SEPARATOR
                     . $this->_model->view, (array) $this->_model);
         }
         return $view->render();

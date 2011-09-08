@@ -7,6 +7,6 @@
     <span class="descr"> <?= $description ?></span>
 <? endif; ?>
     </label>
-    <?= Form::select($name, $items, isset($value) ? $value : null, $attributes)?>
+    <?= \cyclone\Form::select($name, $items, isset($value) ? $value : null, $attributes)?>
     <div class="clear"></div>
 </div>
