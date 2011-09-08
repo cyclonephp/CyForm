@@ -1,6 +1,6 @@
 <?php
 
-namespace cyclone\cyform\field;
+namespace cyclone\form\field;
 
 use cyclone as cy;
 
@@ -46,8 +46,8 @@ class Basic {
      * @param array $model the field definition
      * @param string $type the type of the HTML input
      */
-    public function  __construct(cy\CyForm $form, $name
-            , cy\cyform\model\field\Basic $model, $cfg) {
+    public function  __construct(cy\Form $form, $name
+            , cy\form\model\field\Basic $model, $cfg) {
         $this->_form = $form;
         $this->_model = $model;
         $this->_cfg = $cfg;

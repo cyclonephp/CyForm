@@ -1,6 +1,6 @@
 <?php
 
-namespace cyclone\cyform\model\field;
+namespace cyclone\form\model\field;
 
 /**
  * @author Bence Eros

@@ -1,9 +1,9 @@
 <?php
 
-namespace cyclone\cyform\field;
+namespace cyclone\form\field;
 
-use cyclone\cyform;
-use cyclone\cyform\model\field;
+use cyclone\form;
+use cyclone\form\model\field;
 use cyclone as cy;
 
 /**
@@ -12,9 +12,9 @@ use cyclone as cy;
  */
 class Checkbox extends Basic {
 
-    public function  __construct(cy\CyForm $form, $name, field\Basic $model, $cfg) {
+    public function  __construct(cy\Form $form, $name, field\Basic $model, $cfg) {
         if ($model->type != 'checkbox')
-            throw new cyform\Exception('parameter $model->type must be checkbox');
+            throw new form\Exception('parameter $model->type must be checkbox');
         parent::__construct($form, $name, $model, $cfg);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace cyclone\cyform\field;
+namespace cyclone\form\field;
 
 use cyclone as cy;
 
@@ -10,7 +10,7 @@ use cyclone as cy;
  */
 class Submit extends Basic {
 
-    public function  __construct(cy\CyForm $form, $name, cy\cyform\model\field\Basic $model, $cfg) {
+    public function  __construct(cy\Form $form, $name, cy\form\model\field\Basic $model, $cfg) {
         parent::__construct($form, $name, $model, 'submit', $cfg);
     }
 

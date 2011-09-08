@@ -6,13 +6,13 @@ namespace cyclone;
  * @author Bence Eros <crystal@cyclonephp.com>
  * @package CyForm
  */
-class CyForm {
+class Form {
 
     /**
      * @return CyForm_Model
      */
     public static function model() {
-        return new cyform\Model;
+        return new form\Model;
     }
 
     /**
@@ -22,12 +22,12 @@ class CyForm {
      * @return CyForm_Model_Field
      */
     public static function field($name = NULL, $type = 'text') {
-        $candidate = '\\cyclone\\cyform\\model\\field\\' . $type;
+        $candidate = '\\cyclone\\form\\model\\field\\' . $type;
         if (class_exists($candidate)) {
             $class = $candidate;
             return new $class($name);
         }
-        return new cyform\model\field\Basic($type, $name);
+        return new form\model\field\Basic($type, $name);
     }
 
     /**
@@ -35,7 +35,7 @@ class CyForm {
      * @return CyForm_Model_DataSource
      */
     public static function source($callback) {
-        return new cyform\model\DataSource($callback);
+        return new form\model\DataSource($callback);
     }
 
     /**
@@ -45,7 +45,7 @@ class CyForm {
     public static function get_model($name) {
         $file = \cyclone\FileSystem::find_file('forms/' . $name . '.php');
         if (FALSE === $file)
-            throw new cyform\Exception("form not found: $name");
+            throw new form\Exception("form not found: $name");
 
         return require $file;
     }
@@ -91,8 +91,8 @@ class CyForm {
             $model = self::get_model($model);
         }
 
-        if (  ! ($model instanceof cyform\Model))
-            throw new cyform\Exception('invalid model');
+        if (  ! ($model instanceof form\Model))
+            throw new form\Exception('invalid model');
 
         $this->_model = $model;
 
@@ -108,11 +108,11 @@ class CyForm {
      */
     protected function init($load_data_sources) {
         foreach($this->_model->fields as $name => $field_model) {
-            $class = '\\cyclone\\cyform\\field\\'. $field_model->type;
+            $class = '\\cyclone\\form\\field\\'. $field_model->type;
             if (class_exists($class)) {
                 $field = new $class($this, $name, $field_model, $this->_cfg);
             } else  {
-                $field = new cyform\field\Basic($this, $name, $field_model, $this->_cfg);
+                $field = new form\field\Basic($this, $name, $field_model, $this->_cfg);
             }
             
             if ($load_data_sources) {
@@ -217,10 +217,10 @@ class CyForm {
         $_SESSION[$sess_key]['progress'][$progress_id] = array();
 
         // creating hidden input for storing unique form ID
-        $field_model = new cyform\model\field\Basic('hidden'
+        $field_model = new form\model\field\Basic('hidden'
              , $this->_cfg['progress_key']);
 
-        $field = new cyform\field\Basic($this, $this->_cfg['progress_key']
+        $field = new form\field\Basic($this, $this->_cfg['progress_key']
                 , $field_model, $this->_cfg);
         $field->set_data($progress_id);
         // and adding it to the form inputs
@@ -384,7 +384,7 @@ class CyForm {
     public function hide_fields($fields) {
         foreach ($fields as $field_name) {
             if ( ! isset($this->_fields[$field_name]))
-                throw new Exception("Can't hide field '$field_name' in the form since it does not exist");
+                throw new form\Exception("Can't hide field '$field_name' in the form since it does not exist");
             unset($this->_fields[$field_name]);
         }
         return $this;
@@ -394,7 +394,7 @@ class CyForm {
     public function  __toString() {
         try {
             return $this->render();
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             Kohana::exception_handler($ex);
             return '';
         }

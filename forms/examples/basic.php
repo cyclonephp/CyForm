@@ -2,8 +2,8 @@
 
 use cyclone as cy;
 
-return cy\CyForm::model()
-    ->field(cy\CyForm::field('name', 'text')
+return cy\Form::model()
+    ->field(cy\Form::field('name', 'text')
         ->validator('not_empty')
         ->validator('regex', array('/[a-z]*/'))
         ->validator('numeric', array(), ':1: invalid number format')
