@@ -22,6 +22,19 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
         $this->assertTrue($form->_fields['basic'] instanceof cy\form\field\Basic);
     }
 
+    public function providerExplicitInput() {
+        return array(
+            array('text', '\\cyclone\\form\\field\\Basic'),
+            array('hidden', '\\cyclone\\form\\field\\Basic'),
+            array('checkbox', '\\cyclone\\form\\field\\Checkbox'),
+            array('password', '\\cyclone\\form\\field\\Basic'),
+            array('itemlist', '\\cyclone\\form\\field\\Itemlist'),
+            array('submit', '\\cyclone\\form\\field\\Basic'),
+            array('textarea', '\\cyclone\\form\\field\\Basic'),
+            array('date', '\\cyclone\\form\\field\\Date')
+        );
+    }
+
     /**
      *
      * @dataProvider providerExplicitInput
@@ -269,19 +282,6 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
         return array(
             array('id' => 1, 'text' => 'txt1'),
             array('id' => 2, 'text' => 'txt2')
-        );
-    }
-
-    public function providerExplicitInput() {
-        return array(
-            array('text', '\\cyclone\\form\\field\\Basic'),
-            array('hidden', '\\cyclone\\form\\field\\Basic'),
-            array('checkbox', '\\cyclone\\form\\field\\Checkbox'),
-            array('password', '\\cyclone\\form\\field\\Basic'),
-            array('itemlist', '\\cyclone\\form\\field\\ItemList'),
-            array('submit', '\\cyclone\\form\\field\\Basic'),
-            array('textarea', '\\cyclone\\form\\field\\Basic'),
-            array('date', '\\cyclone\\form\\field\\Date')
         );
     }
 
