@@ -8,7 +8,7 @@ use cyclone as cy;
  * @author Bence Eros <crystal@cyclonephp.com>
  * @package CyForm
  */
-class Date extends Basic {
+class DateField extends BasicField {
 
     public $value_format = 'year-month-day';
 
@@ -24,7 +24,7 @@ class Date extends Basic {
         'day' => null
     );
 
-    public function  __construct(cy\Form $form, $name, cy\form\model\field\Basic $model, $cfg) {
+    public function  __construct(cy\Form $form, $name, cy\form\model\field\BasicField $model, $cfg) {
         parent::__construct($form, $name, $model, 'date', $cfg);
     }
 

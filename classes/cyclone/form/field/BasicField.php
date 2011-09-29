@@ -8,7 +8,7 @@ use cyclone as cy;
  * @author Bence Eros <crystal@cyclonephp.com>
  * @package CyForm
  */
-class Basic {
+class BasicField {
 
     /**
      *
@@ -47,7 +47,7 @@ class Basic {
      * @param string $type the type of the HTML input
      */
     public function  __construct(cy\Form $form, $name
-            , cy\form\model\field\Basic $model, $cfg) {
+            , cy\form\model\field\BasicField $model, $cfg) {
         $this->_form = $form;
         $this->_model = $model;
         $this->_cfg = $cfg;
@@ -231,7 +231,7 @@ class Basic {
             $view = new \cyclone\View($this->_form->_model->theme
                 .DIRECTORY_SEPARATOR.$this->_model->view,
                 (array) $this->_model);
-        } catch (\cyclone\Kohana_View_Exception $ex) {
+        } catch (cy\ViewException $ex) {
             $view = new \cyclone\View(\CyForm::DEFAULT_THEME . DIRECTORY_SEPARATOR
                     . $this->_model->view, (array) $this->_model);
         }

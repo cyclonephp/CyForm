@@ -6,7 +6,7 @@ namespace cyclone\form\model\field;
  * @author Bence Eros
  * @package CyForm
  */
-class Basic {
+class BasicField {
 
     public $name;
 

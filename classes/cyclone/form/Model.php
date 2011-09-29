@@ -98,7 +98,7 @@ class Model {
      * @param CyForm_Model_Field $field
      * @return CyForm_Model
      */
-    public function field(model\field\Basic $field) {
+    public function field(model\field\BasicField $field) {
         if (is_null($field->name)) {
             $this->fields []= $field;
         } else {

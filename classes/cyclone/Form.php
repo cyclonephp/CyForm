@@ -22,11 +22,11 @@ class Form {
      * @return CyForm_Model_Field
      */
     public static function field($name = NULL, $type = 'text') {
-        $candidate = '\\cyclone\\form\\model\\field\\' . ucfirst($type);
+        $candidate = '\\cyclone\\form\\model\\field\\' . ucfirst($type) . 'Field';
         if (class_exists($candidate)) {
             return new $candidate($name);
         }
-        return new form\model\field\Basic($type, $name);
+        return new form\model\field\BasicField($type, $name);
     }
 
     /**
@@ -107,11 +107,11 @@ class Form {
      */
     protected function init($load_data_sources) {
         foreach($this->_model->fields as $name => $field_model) {
-            $class = '\\cyclone\\form\\field\\'. ucfirst($field_model->type);
+            $class = '\\cyclone\\form\\field\\'. ucfirst($field_model->type) . 'Field';
             if (class_exists($class)) {
                 $field = new $class($this, $name, $field_model, $this->_cfg);
             } else  {
-                $field = new form\field\Basic($this, $name, $field_model, $this->_cfg);
+                $field = new form\field\BasicField($this, $name, $field_model, $this->_cfg);
             }
             
             if ($load_data_sources) {
@@ -216,10 +216,10 @@ class Form {
         $_SESSION[$sess_key]['progress'][$progress_id] = array();
 
         // creating hidden input for storing unique form ID
-        $field_model = new form\model\field\Basic('hidden'
+        $field_model = new form\model\field\BasicField('hidden'
              , $this->_cfg['progress_key']);
 
-        $field = new form\field\Basic($this, $this->_cfg['progress_key']
+        $field = new form\field\BasicField($this, $this->_cfg['progress_key']
                 , $field_model, $this->_cfg);
         $field->set_data($progress_id);
         // and adding it to the form inputs

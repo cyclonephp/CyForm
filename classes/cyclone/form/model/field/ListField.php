@@ -8,9 +8,9 @@ use cyclone as cy;
  * @author Bence Eros
  * @package CyForm
  */
-class Itemlist extends Basic {
+class ListField extends BasicField {
 
-    public $type = 'itemlist';
+    public $type = 'list';
     /**
      *
      * @var CyForm_Model_DataSource

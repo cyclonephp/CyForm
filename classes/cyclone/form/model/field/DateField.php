@@ -2,7 +2,7 @@
 
 namespace cyclone\form\model\field;
 
-class Date extends Basic {
+class DateField extends BasicField {
 
 
     public $min_date = array('year' => '1900', 'month' => '01', 'day' => '01');

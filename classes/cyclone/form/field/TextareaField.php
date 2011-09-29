@@ -8,9 +8,9 @@ use cyclone as cy;
  * @author Bence Eros <crystal@cyclonephp.com>
  * @package CyForm
  */
-class Textarea extends Basic {
+class TextareaField extends BasicField {
 
-    public function  __construct(cy\Form $form, $name, cy\form\model\field\Basic $model, $cfg) {
+    public function  __construct(cy\Form $form, $name, cy\form\model\field\BasicField $model, $cfg) {
         parent::__construct($form, $name, $model, 'textarea', $cfg);
     }
 

@@ -19,19 +19,19 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
                 ->field(cy\Form::field('basic', 'text'))
         );
         $this->assertEquals(1, count($form->_fields));
-        $this->assertTrue($form->_fields['basic'] instanceof cy\form\field\Basic);
+        $this->assertTrue($form->_fields['basic'] instanceof cy\form\field\BasicField);
     }
 
     public function providerExplicitInput() {
         return array(
-            array('text', '\\cyclone\\form\\field\\Basic'),
-            array('hidden', '\\cyclone\\form\\field\\Basic'),
-            array('checkbox', '\\cyclone\\form\\field\\Checkbox'),
-            array('password', '\\cyclone\\form\\field\\Basic'),
-            array('itemlist', '\\cyclone\\form\\field\\Itemlist'),
-            array('submit', '\\cyclone\\form\\field\\Basic'),
-            array('textarea', '\\cyclone\\form\\field\\Basic'),
-            array('date', '\\cyclone\\form\\field\\Date')
+            array('text', '\\cyclone\\form\\field\\BasicField'),
+            array('hidden', '\\cyclone\\form\\field\\BasicField'),
+            array('checkbox', '\\cyclone\\form\\field\\CheckboxField'),
+            array('password', '\\cyclone\\form\\field\\BasicField'),
+            array('list', '\\cyclone\\form\\field\\ListField'),
+            array('submit', '\\cyclone\\form\\field\\BasicField'),
+            array('textarea', '\\cyclone\\form\\field\\BasicField'),
+            array('date', '\\cyclone\\form\\field\\DateField')
         );
     }
 
@@ -46,7 +46,7 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
     }
 
     public function testInputCheckbox() {
-        $checkbox = new cy\form\field\Checkbox(new cy\Form(cy\Form::model()), ''
+        $checkbox = new cy\form\field\CheckboxField(new cy\Form(cy\Form::model()), ''
                 , cy\Form::field('chb', 'checkbox')
                 , cy\Config::inst()->get('cyform'));
 
@@ -65,7 +65,7 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
 
     public function testDataSourceLoading() {
         $form = new cy\Form(cy\Form::model()
-                ->field(cy\Form::field('name', 'itemlist')
+                ->field(cy\Form::field('name', 'list')
                 ->source(cy\Form::source(array($this, 'mockDataSource'))
                     ->val('id')
                     ->text('text'))));
@@ -91,7 +91,6 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
     }
 
     public function testValidation() {
-        //$this->markTestSkipped('CyclonePHP needs a standalone validator class');
         $form = new cy\Form('examples/basic');
         $form->set_input(array('name' => 'hello'));
         $this->assertEquals(array(
@@ -105,7 +104,7 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
         $form = new cy\Form(cy\Form::model()
                 ->field(cy\Form::field('name1', 'text'))
                 ->field(cy\Form::field('name2', 'checkbox'))
-                ->field(cy\Form::field('name3', 'itemlist')
+                ->field(cy\Form::field('name3', 'list')
                         ->items(array(
                             'val1' => 'text1',
                             'val2' => 'text2'
