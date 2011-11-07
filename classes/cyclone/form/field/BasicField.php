@@ -3,6 +3,7 @@
 namespace cyclone\form\field;
 
 use cyclone as cy;
+use cyclone\view;
 
 /**
  * @author Bence Eros <crystal@cyclonephp.com>
@@ -228,11 +229,11 @@ class BasicField {
     public function render() {
         $this->before_rendering();
         try {
-            $view = new \cyclone\View($this->_form->_model->theme
+            $view = new view\PHPView($this->_form->_model->theme
                 .DIRECTORY_SEPARATOR.$this->_model->view,
                 (array) $this->_model);
-        } catch (cy\ViewException $ex) {
-            $view = new \cyclone\View(\CyForm::DEFAULT_THEME . DIRECTORY_SEPARATOR
+        } catch (view\ViewException $ex) {
+            $view = new view\PHPView(cy\Form::DEFAULT_THEME . DIRECTORY_SEPARATOR
                     . $this->_model->view, (array) $this->_model);
         }
         return $view->render();
@@ -242,7 +243,7 @@ class BasicField {
         try {
             return $this->render();
         } catch (Exception $ex) {
-            Kohana::exception_handler($ex);
+            cy\Kohana::exception_handler($ex);
             return '';
         }
     }

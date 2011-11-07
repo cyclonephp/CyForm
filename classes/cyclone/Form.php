@@ -338,13 +338,16 @@ class Form {
     public function render() {
         $this->before_rendering();
         try {
-            $view = new \cyclone\View($this->_model->theme
+            if ( ! class_exists('cyclone\\view\\PHPView')) {
+                require '/media/private/php/cyclonephp/cyclone/classes/cyclone/view/PHPView.php';
+            }
+            $view = new \cyclone\view\PHPView($this->_model->theme
                 .DIRECTORY_SEPARATOR.$this->_model->view, array(
                     'model' => $this->_model,
                     'fields' => $this->_fields
                 ));
-        } catch (Kohana_View_Exception $ex) {
-            $view = new \cyclone\View(self::DEFAULT_THEME . DIRECTORY_SEPARATOR
+        } catch (view\ViewException $ex) {
+            $view = new view\PHPView(self::DEFAULT_THEME . DIRECTORY_SEPARATOR
                     . $this->_model->view, array(
                     'model' => $this->_model,
                     'fields' => $this->_fields
