@@ -8,9 +8,13 @@
 <? endif; ?>
     </label>
     <div class="select-cnt">
-    <? foreach ($segments as $segment) {
-        echo \cyclone\Form::select($segment['name'], $segment['items'], $segment['value']);
-    } ?>
+    <? foreach ($segments as $segment) : ?>
+        <select name="<?= $segment['name'] ?>">
+            <? foreach ($segment['items'] as $val => $txt) : ?>
+            <option value="<?= $val ?>" <?= (isset($segment['value']) && $segment['value'] == $val) ? 'selected' : ''?>><?= $txt ?></option>
+            <? endforeach; ?>
+        </select>
+    <? endforeach; ?>
     </div>
     <div class="clear"></div>
 </div>

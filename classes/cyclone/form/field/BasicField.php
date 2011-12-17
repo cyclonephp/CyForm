@@ -158,7 +158,7 @@ class BasicField {
         $result = call_user_func_array($callback, $params);
         if ( ! $result) {
             if ( ! isset($error)) {
-                $error = __(\Config::inst()->get('cyform.default_error_prefix') . $validator);
+                $error = __(cy\Config::inst()->get('cyform.default_error_prefix') . $validator);
             }
             $this->add_validation_error($validator, $error, $params);
             return FALSE;
