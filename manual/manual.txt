@@ -1,0 +1,107 @@
+The CyForm library is a lightweight abstraction layer for easily handling HTML forms.
+The library lets you define your form inputs and validation rules using a fluent internal DSL.
+Handling the forms in the controllers is pretty easy.
+
+The library gives a basic data binding support, which means that it can
+<ul>
+	<li>populate form inputs based on a passed business entity</li>
+	<li>populate business entity properties based on a form input</li>
+</ul>
+
+To make the understanding clear we will use the following terms in this tutorial:
+<ul>
+	<li><b>data</b> will mean the business data that you want to work with. It can be a
+		complete entity that you want to load from/into the form inputs, or a property
+		of the entity that a form input will handle. The business data is not necessarily
+		stored in any specific ORM/ActiveRecord model instance. In general, the data can be
+		loaded by CyForm from/into an array, or an object that meet the following conditions:
+		<ul>
+			<li>implements the <tt>Iterable</tt> interface</li>
+			<li>the constructor doesn't have parameters or all parameters does have a default value</li>
+			<li>its properties can be set by using the assignment operator (CyForm doesn't support 
+				populating entities using accessor methods).</li>
+		</ul>
+		</li>
+	<li><b>input</b> will mean the form input coming from the incoming request's GET or POST
+		parameters.</li>
+</ul>
+
+@section cyform-models Defining your first form
+
+Let's open the cyform/forms/examples/complex.php and look at the form definition in it.
+In most parts of this manual we will discuss the semantics of this definition:
+
+@code
+<?php
+
+use cyclone as cy;
+
+return cy\Form::model()->theme('cyform/daffodil')
+        ->title('Complex CyForm example')
+        ->field(cy\Form::field('name')
+            ->label('username'))
+
+        ->field(cy\Form::field('password', 'password')
+            ->label('password')
+        )->field(cy\Form::field('role', 'list')
+            ->label('role')
+            ->view('select')
+            ->items(array(
+                '0' => 'user',
+                '1' => 'admin'
+            ))
+        )->field(cy\Form::field('enabled', 'checkbox')
+             ->label('enabled')
+        )->field(cy\Form::field('about', 'textarea')
+                ->label('about')
+        )->field(cy\Form::field('gender', 'list')
+            ->label('gender')
+            ->view('buttons')
+            ->validator('not_empty')
+            ->items(array(
+                'f' => 'female',
+                'm' => 'male'
+            ))
+        )->field(cy\Form::field('groups', 'list')
+                ->label('groups')
+                ->multiple(TRUE)
+                ->view('buttons')
+                ->items(array(
+                    '1' => 'group 01',
+                    '2' => 'group 02',
+                    '3' => 'group 03'
+                ))
+        )->field(cy\Form::field('expires', 'date')
+                ->label('expires')
+                //->min_date('now')
+                ->max_date(array('year' => '2015', 'month' => '05', 'day' => '22'))
+        )->field(cy\Form::field(NULL, 'submit')
+                ->label('Ok'))
+
+
+;
+@endcode
+
+The  basic semantics of the above form definition are the followings:
+<ul>
+	<li><tt>cy\Form::model()</tt> is a factory method that creates an empty \c cyclone\form\Model instance.
+		All the fields and attributes of the form will be added to this object using chained accessor
+		method calls.</li>
+	<li>the \c cyclone\form\Model::theme() will define the root path of the HTML templates to be used when rendering
+		the form. The themes may define not only HTML templates but css and maybe javascript files too. For
+		example in our example CyForm will add the <tt>assets/css/cyform/daffodil.css</tt> and 
+		<tt>assets/js/cyform/daffodil.js</tt> files to the asset pool if they exists.
+		If a form theme doesn't define its HTML templates (eg. the file <tt>views/cyform/daffodil/radiogroup.php</tt>
+		file doesn't exist, then CyForm will fall back to the corresponding template of the <tt>cyform/default</tt>
+		theme. The <tt>cyform/daffodil</tt> theme is a good example of it, since it doesn't define any
+		templates at all.
+	<li>the form model has got a <tt>$title</tt> property (handled by the <tt>handle()</tt> setter), but it doesn't have any special meaning: it will
+		be rendered above the form output.</li>
+	<li>the @c cyclone\form\Model::field() calls accept a \c cyclone\form\model\field\BasicField instance.
+		These instances are created by \c cyclone\Form::field() static factory method calls, which accepts
+		2 parameters: the name of the property of the business entity which the input should handle, and the
+		type of the input. The latter one must be a string identifying a form type that can be handled by
+		CyForm - these input types doesn't match exactly the HTML input types, it will be discussed later.
+</ul>
+
+
