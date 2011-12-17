@@ -7,6 +7,10 @@
     <span class="descr"> <?= $description ?></span>
 <? endif; ?>
     </label>
-    <?= \cyclone\Form::select($name, $items, isset($value) ? $value : null, $attributes)?>
+    <select name="<?= $name ?>">
+	<? foreach ($items as $val => $txt) : ?>
+	<option value="<?= $val ?>" <?= (isset($value) && $value == $val) ? 'selected' : '' ?>><?= $txt ?></option>
+        <? endforeach; ?>
+    </select>
     <div class="clear"></div>
 </div>
