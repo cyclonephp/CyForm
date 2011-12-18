@@ -4,10 +4,12 @@
 
         var cyform = this;
 
-        this.createSubmitAction = function() {
+        this.createSubmitAction = function(beforeReRender, onSuccess) {
             var formElem = $('form', cyform);
             var method = formElem.attr('method').toUpperCase();
             var action = formElem.attr('action');
+            console.log("createSubmitAction()");
+            var self = this;
             return function(event){
                 event.preventDefault();
                 var formData = cyform.serialize();
@@ -17,7 +19,12 @@
                         data: formData,
                         dataType: "json",
                         success: function(resp) {
-                            console.log(resp)
+                            if (resp.form) {
+                                beforeReRender(resp.form)
+                                $(cyform).replaceWith(resp.form);
+                            } else if ($.isFunction(onSuccess)) {
+                                onSuccess.call(self, resp);
+                            }
                         }
                     });
                 }
@@ -27,8 +34,11 @@
         this.ajaxify = function() {
             if ($(cyform).data("cyform-ajaxified") === true)
                 return; // the form has already been ajaxified - nothing to do
-
-            $('form input[type=submit]', cyform).click(this.createSubmitAction());
+console.log("ajaxification: "+
+            $(cyform).find('form input[type=submit]')
+                .click(this.createSubmitAction(function(form) {
+                    $(form).cyform("ajaxify");
+                })).length);
             
             $(cyform).data("cyform-ajaxified", true);
         }
@@ -71,7 +81,7 @@
             return rval;
         }
 
-        this.dialogify = function(buttonActions, dialogOptions) {
+        this.dialogify = function(buttonActions, dialogOptions, onSuccess) {
             var submitButton = $(cyform).find("input[type=submit]");
             if (submitButton.length > 1)
                 throw "failed to dialogify form: multiple submit buttons found";
@@ -90,7 +100,9 @@
             
             var submitButtonName = submitButton.attr("value");
             if (dialogOptions.buttons[submitButtonName] === undefined) {
-                dialogOptions.buttons[submitButtonName] = this.createSubmitAction();
+                dialogOptions.buttons[submitButtonName] = this.createSubmitAction(function(form) {
+                    $(form).cyform("dialogify", buttonActions, dialogOptions);
+                }, onSuccess);
             }
             submitButton.remove();
             cyform.dialog(dialogOptions);

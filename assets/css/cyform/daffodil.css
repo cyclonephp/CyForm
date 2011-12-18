@@ -43,3 +43,10 @@ fieldset.cyform input[type=submit] {
     width: 40%;
     text-align: center;
 }
+
+fieldset.cyform .error {
+    font-weight: bold;
+    font-size: 80%;
+    color: red;
+    text-align: center
+}
