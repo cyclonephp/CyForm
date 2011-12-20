@@ -4,7 +4,7 @@
 
         var cyform = this;
 
-        this.createSubmitAction = function(beforeReRender, onSuccess) {
+        this.createSubmitAction = function(onError, onSuccess) {
             var formElem = $('form', cyform);
             var method = formElem.attr('method').toUpperCase();
             var action = formElem.attr('action');
@@ -19,8 +19,8 @@
                         dataType: "json",
                         success: function(resp) {
                             if (resp.form) {
-                                beforeReRender(resp.form)
-                                $(cyform).replaceWith(resp.form);
+                                console.log("bah")
+                                onError(resp.form);
                             } else if ($.isFunction(onSuccess)) {
                                 onSuccess.call(self, resp);
                             }
@@ -74,6 +74,7 @@
                         break;
                 }
             });
+
             return rval;
         }
 
@@ -97,6 +98,9 @@
             var submitButtonName = submitButton.attr("value");
             if (dialogOptions.buttons[submitButtonName] === undefined) {
                 dialogOptions.buttons[submitButtonName] = this.createSubmitAction(function(form) {
+                    $(cyform).dialog("close").remove();
+                    console.log("closing prev dialog");
+                    dialogOptions.buttons[submitButtonName] = undefined;
                     $(form).cyform("dialogify", buttonActions, dialogOptions);
                 }, onSuccess);
             }
