@@ -19,7 +19,6 @@
                         dataType: "json",
                         success: function(resp) {
                             if (resp.form) {
-                                console.log("bah")
                                 onError(resp.form);
                             } else if ($.isFunction(onSuccess)) {
                                 onSuccess.call(self, resp);
@@ -99,9 +98,8 @@
             if (dialogOptions.buttons[submitButtonName] === undefined) {
                 dialogOptions.buttons[submitButtonName] = this.createSubmitAction(function(form) {
                     $(cyform).dialog("close").remove();
-                    console.log("closing prev dialog");
                     dialogOptions.buttons[submitButtonName] = undefined;
-                    $(form).cyform("dialogify", buttonActions, dialogOptions);
+                    $(form).cyform("dialogify", buttonActions, dialogOptions, onSuccess);
                 }, onSuccess);
             }
             submitButton.remove();
