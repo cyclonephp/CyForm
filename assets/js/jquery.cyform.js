@@ -8,7 +8,6 @@
             var formElem = $('form', cyform);
             var method = formElem.attr('method').toUpperCase();
             var action = formElem.attr('action');
-            console.log("createSubmitAction()");
             var self = this;
             return function(event){
                 event.preventDefault();
@@ -34,11 +33,10 @@
         this.ajaxify = function() {
             if ($(cyform).data("cyform-ajaxified") === true)
                 return; // the form has already been ajaxified - nothing to do
-console.log("ajaxification: "+
             $(cyform).find('form input[type=submit]')
                 .click(this.createSubmitAction(function(form) {
                     $(form).cyform("ajaxify");
-                })).length);
+                }));
             
             $(cyform).data("cyform-ajaxified", true);
         }
@@ -76,8 +74,6 @@ console.log("ajaxification: "+
                         break;
                 }
             });
-
-            console.log(rval);
             return rval;
         }
 
