@@ -242,7 +242,7 @@ class BasicField {
     public function __toString() {
         try {
             return $this->render();
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             cy\Kohana::exception_handler($ex);
             return '';
         }
