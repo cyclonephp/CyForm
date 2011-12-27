@@ -77,7 +77,7 @@
             return rval;
         }
 
-        this.dialogify = function(buttonActions, dialogOptions, onSuccess) {
+        this.dialogify = function(dialogOptions, onSuccess) {
             var submitButton = $(cyform).find("input[type=submit]");
             if (submitButton.length > 1)
                 throw "failed to dialogify form: multiple submit buttons found";
@@ -86,12 +86,7 @@
             $(cyform).find("> legend").remove();
             
             if (dialogOptions.buttons === undefined) {
-                var dialogButtons = {};
-                $(cyform).find("input[type=button]").each(function() {
-                    dialogButtons[$(this).attr("name")] = buttonActions[$(this).attr("name")];
-                    $(this).remove();
-                });
-                dialogOptions.buttons = dialogButtons;
+                dialogOptions.buttons = {};
             }
             
             var submitButtonName = submitButton.attr("value");
@@ -99,7 +94,7 @@
                 dialogOptions.buttons[submitButtonName] = this.createSubmitAction(function(form) {
                     $(cyform).dialog("close").remove();
                     dialogOptions.buttons[submitButtonName] = undefined;
-                    $(form).cyform("dialogify", buttonActions, dialogOptions, onSuccess);
+                    $(form).cyform("dialogify", dialogOptions, onSuccess);
                 }, onSuccess);
             }
             submitButton.remove();
