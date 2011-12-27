@@ -104,7 +104,52 @@
             }
             submitButton.remove();
             cyform.dialog(dialogOptions);
-        }
+        };
+
+        this.populate = function(data) {
+            $(this).find("input, textarea, select").each(function() {
+                var inputName = $(this).attr("name");
+                if (inputName === undefined)
+                    return;
+
+                var inputData = data[inputName];
+                var prefix = inputName.substr(0, inputName.length - 2);
+                var suffix = inputName.substr(inputName.length - 2, 2);
+                console.log("itt: " + prefix + suffix + " " + this.tagName)
+                if ( suffix == "[]"
+                        && this.tagName == "INPUT"
+                        &&  $(this).attr("type") == "checkbox") {
+
+                    if (data[prefix] === undefined)
+                        return;
+
+                    inputData = data[prefix];
+                    var chbVal = $(this).attr("value");
+
+                    if ( ! $.isArray(inputData))
+                        throw "the value of checkbox groups must be an array. data." + inputName + " is not an array";
+
+                    for (var i = 0; i < inputData.length; ++i) {
+                        if (inputData[i] == chbVal) {
+                            $(this).attr("checked", true);
+                            break;
+                        }
+                    }
+                } else if ($(this).attr("type") === "checkbox") {
+                    if (inputData) {
+                        $(this).attr("checked", true);
+                    }
+                } else if (this.tagName === "SELECT") {
+                    // TODO
+                } else if ($(this).attr("type") == "radio") {
+                  if (inputData !== undefined && $(this).attr("value") == inputData) {
+                      $(this).attr("checked", true)
+                  }
+                } else if (data[inputName] !== undefined) {
+                    $(this).val(inputData);
+                }
+            });
+        };
 
         var _method = arguments[0];
 

@@ -104,4 +104,47 @@ The  basic semantics of the above form definition are the followings:
 		CyForm - these input types doesn't match exactly the HTML input types, it will be discussed later.
 </ul>
 
+@section cyform-controller Using the forms
+
+Generally in web development "using" HTML forms means the following process:
+<ol>
+	<li>rendering the form in the browser</li>
+	<li>the user fills the form and submits the form data</li>
+	<li>we validate the form. If the submitted form data is invalid, then we go back to step #1 (rendering
+		the form, including some error messages).</li>
+	<li>If the form submit was successful and the input fits all validation rules, then we process the
+		submitted form data (eg. we convert it into an entity and store it in a database).</li>
+</ol>
+
+Before going on let's see how we can use the forms. In the example below we will manage the above form
+defined in <code>cyform/forms/examples/complex.php</code>:
+@code
+namespace app\controller;
+
+use cyclone\request;
+use cyclone as cy;
+
+class CyformController extends request\BaseController {
+
+    public function action_index() {
+		// loading the form model
+        $form = new cy\Form('examples/complex');
+        // if the form has been submitted by the user
+        // and the input passes the validators
+        if ($this->is_post() && $form->set_input($_POST)) {
+			// then we do some processing on the resulting data
+			// in this case we simply var_dump() it to see the result
+            var_dump($form->get_data());
+        } else {
+			// if the form hasn't been submitted or it has some
+			// validation errors, then we render it.
+            $this->_content->form = $form->render();
+        }
+    }
+    
+}
+@endcode
+
+
+
 
