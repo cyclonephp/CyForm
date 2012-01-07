@@ -145,6 +145,214 @@ class CyformController extends request\BaseController {
 }
 @endcode
 
+As you can see, with CyForm you can easily handle - in a few lines - the basic form
+processing described above. The key features that should be learned from the
+example:
+<ul>
+    <li>You can create a form instance that works on the model defined in <code>forms/examples/complex.php</code>
+        using the <code>new cy\Form('exaples/complex')</code> constructor call.</li>
+    <li>The <code>cy\Form::set_input()</code> method loads the input data (usually
+        coming from the HTTP request) into the form fields. The vaildators are also
+        executed (unless you pass <code>FALSE</code> as the second parameter) and
+        the <code>set_input()</code> method will return TRUE if the input passes
+        all validation rules of the form fields.</li>
+    <li>If the validation succeeds then the resulting data is accessible using the
+        <code>cy\Form::get_data()</code> method call.</li>
+    <li>The HTML output of the form can be rendered by the <code>cy\Form::render()</code>
+        method. Note: <code>cy\Form::__toString()</code> has the same result.</li>
+</ul>
 
+@section cyform-field-types CyForm field types
 
+As it has been mentioned in the introduction of this manual the CyForm library
+provides numerous field types, and these field types are closely related to the
+HTML input types, but they are not exactly the same. In this chapter we will discuss
+the field types one by one.
 
+@subsection cyform-field-type-basic Basic field types
+
+The basic field types are the followings: text, textarea, password, hidden and submit.
+These can be created using <code>cy\Form::field(&lt;field-name&gt;, &lt;field-type&gt;)</code>
+calls in the model definition (which will return a  \c cyclone\form\model\field\BasicField instance).
+The <code>field-type</code> parameter defaults to
+'text', passing 'textarea', 'password' or 'submit' will also create the corresponding
+basic field model. The <code>field-name</code> parameter must be a string, or
+optionally <code>NULL</code> (probably you won't need to give a name for the submit buttons).<br/>
+<br/>
+The basic field types only differ in their type and theis HTML output, otherwise
+they share exactly the same properties which are recommended to be set using
+the chainable setter methods of \c cyclone\form\model\field\BasicField class.
+
+The important subset of these properties is the following:
+<ul>
+    <li><code>$attributes</code>: holds a key-value pair of HTML attributes to be
+        applied in the HTML output.</li>
+    <li><code>$label</code>: holds the string to be rendered near the field</li>
+    <li><code>$description</code> can be used to give a bit more detailed
+        description of the field</li>
+    <li><code>$validators</code> stores the list of validators that will be
+        executed during the validation process, which probably happens after
+        the form submission</li>
+    <li><code>$on_empty</code> stores a default value that should be assigned
+        to the property of the resulting data which the given field maps to, if
+        the field is not filled in.</li>
+    <li><code>$view</code> can be used to override the HTML template of the form theme
+        to be applied on the form. It can be useful when you want to render one or a few
+        fields differently from the other fields. If you want to use a custom HTML template
+        for all the instances of a field type then it's recommended to take the advantage
+        of the cascading file system and override the given template in the application's
+        root directory.</li>
+</ul>
+
+All the other - more complex - field type models are inherited from
+\c \cyclone\form\model\field\BasicField therefore all these properties exist the
+futher field types.
+
+@subsection cyform-field-type-list List field type
+
+List type form field models can be created using <code>cy\Form::field(&lt;field-name&gt;, 'list')</code>
+calls in the form model definition. These calls will return a \c cyclone\form\model\field\ListField
+instance. A list type field means a list of possible values that can be filtered
+(selected) by the user. Generally there are three kind of inputs in HTML to enter such data:
+<ul>
+    <li>select input (one or multiple values can be selected by the user)</li>
+    <li>radio groups (only one value can be selected)</li>
+    <li>checkbox list (multiple values can be selected)</li>
+</ul>
+
+Although these input types are very different in HTML they serve the same reason
+therefore CyForm models all these input types in one field type, the list field type.
+
+Let's see some examples on how to configure a list field type. You can see
+the examples below differ in the value of the <code>$view</code> property (acceptable
+values are <code>'select'</code> and <code>'buttons'</code>)
+and the <code>$multiple</code> property. 
+<ul>
+    <li>select input with one selectable item:
+        @code
+cy\Form::field('role', 'list')
+    ->label('role')
+    ->view('select')
+    ->items(array(
+        '0' => 'user',
+        '1' => 'admin'
+   ))
+        @endcode
+
+    </li>
+    <li>select input with multiple selectable items:
+    @code
+cy\Form::field('role', 'list')
+    ->multiple(TRUE)
+    ->label('role')
+    ->view('select')
+    ->items(array(
+        '0' => 'user',
+        '1' => 'admin'
+   ))
+    @endcode
+    </li>
+    <li>Radio groups ("buttons" with one selectable item):
+@code
+cy\Form::field('gender', 'list')
+    ->label('gender')
+    ->view('buttons')
+    ->items(array(
+        'f' => 'female',
+        'm' => 'male'
+    ))
+@endcode
+    </li>
+    <li>Checkbox list ("buttons" with multiple selectable items):
+    @code
+cy\Form::field('groups', 'list')
+    ->label('groups')
+    ->multiple(TRUE)
+    ->view('buttons')
+    ->items(array(
+        '1' => 'group 01',
+        '2' => 'group 02',
+        '3' => 'group 03'
+    ))
+    @endcode
+    </li>
+</ul>
+
+To make it clear it is important to keep it in mind that CyForm handles the
+difference between select inputs and radio buttons (or checkboxes) in its view
+layer. You can change the value of the <code>$view</code> property any time, it
+won't affect the form data you access in the controller using <code>cy\Form::get_data()</code>.
+The difference only affects the resulting UI.
+
+The list of the selectable items can be provided for the field in two ways:
+<ul>
+    <li>The list items can be passed as an associative array where the array keys
+        will be the values of the items and the array values will be the text
+        visible for the user. In all the examples above this method is used.</li>
+    <li>A data source can be passed to the field model which is not much more than
+        a callback that will provide the available items.</li>
+</ul>
+
+Let's see an example data source:
+@code
+cy\Form::field('groups', 'list')
+    ->label('groups')
+    ->multiple(TRUE)
+    ->view('buttons')
+    ->source(cy\Form::source(function() {
+        return cy\DB::select()->from('groups')->exec()->as_array();
+    })
+    ->val('id')
+    ->text('name')
+)
+@endcode
+
+Data sources are represented by \c cyclone\form\model\DataSource instances
+which have three important properties:
+<ul>
+    <li>a callback that will return an array of selectable items. Note that
+        the keys of this array won't be used by CyForm, but each items
+        of the array should be associative arrays, and the keys of these
+        item-arrays will matter.</li>
+    <li>A value field (can be set by <code>val()</code>) that tells the data source
+        which value of the item-arrays should be used as the selectable value.</li>
+    <li>A text field (can be set by <code>text()</code> that tells the data source
+        which value of the item-arrays  should be rendered as a user-readable text.
+</ul>
+
+It is important to note that it is possible to combine the two ways of defining
+list items (passing fixed items using <code>items()</code> and passing a data source
+using <code>source()</code>). In this case after the fixed items the result of the
+data source will be shown in the resulting HTML output. A typical use-case of this
+feature is when you want to have a dynamically loaded select list, but you want
+the user to be able to leave this input empty. In this case you can define
+a fixed item that represents the empty value and define the data source too.
+Example:
+@code
+cy\Form::field('groups', 'list')
+    ->label('groups')
+    ->multiple(TRUE)
+    ->view('buttons')
+    ->source(cy\Form::source(function() {
+        return cy\DB::select()->from('groups')->exec()->as_array();
+    })
+    ->val('id')
+    ->text('name')
+    )->items(array(
+        '' => '--'
+    ))
+    ->on_empty(NULL)
+@endcode
+
+In such case if the user doesn't fill the input probably you will want to have
+<code>NULL</code> in the resulting form data and not an empty string value. That's
+why the <code>on_empty()</code> call is also added in the last line of the above
+example. This is the only way to have <code>NULL</code> value in the resulting form data
+in this case, using <code>NULL</code> as the array key in the <code>items()</code>
+call wouldn't solve the problem since it would also be converted into an empty
+string in the HTML output of the list field.
+
+@subsection cyform-field-type-date Date input type
+
+The date input type maps a date encoded in a string to 3 HTML select inputs. The
+date string format is configurable and the selectable date range is configurable.
