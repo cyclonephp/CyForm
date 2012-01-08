@@ -10,8 +10,6 @@ use cyclone as cy;
  */
 class DateField extends BasicField {
 
-    public $value_format = 'year-month-day';
-
     protected $suffixes = array(
         'year' => '_year',
         'month' => '_month',
@@ -41,14 +39,14 @@ class DateField extends BasicField {
     }
 
     public function  set_data($val) {
-        $escaped_value_format = str_replace('/', '\/', $this->value_format);
+        $escaped_value_format = str_replace('/', '\/', $this->_model->format);
         $pattern = '/'.$escaped_value_format.'/';
         foreach (array_keys($this->value) as $segment) {
             $pattern = str_replace($segment, '(?P<'.$segment.'>\d+)', $pattern);
         }
         preg_match($pattern, $val, $matches);
         if (empty($matches))
-            throw new Exception('invalid date format');
+            throw new cy\Exception('invalid date format');
 
         $this->value = array(
             'year' => $matches['year'],
@@ -59,7 +57,7 @@ class DateField extends BasicField {
     }
 
     public function  get_data() {
-        return strtr($this->value_format, $this->value);
+        return strtr($this->_model->format, $this->value);
     }
 
     protected function  before_rendering() {

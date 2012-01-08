@@ -141,9 +141,8 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
      */
     public function testFieldDate($date_string, $input, $date_format) {
         $form = new cy\Form(cy\Form::model()
-                ->field(cy\Form::field('mydate', 'date'))
+                ->field(cy\Form::field('mydate', 'date')->format($date_format))
                 );
-        $form->_fields['mydate']->value_format = $date_format;
 
         $form->set_input(array(
            'mydate_year' => $input['year'],
@@ -154,9 +153,8 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
         $this->assertEquals($data['mydate'], $date_string);
 
         $form = new cy\Form(cy\Form::model()
-                ->field(cy\Form::field('mydate', 'date'))
+                ->field(cy\Form::field('mydate', 'date')->format($date_format))
                 );
-        $form->_fields['mydate']->value_format = $date_format;
         $form->set_data(array('mydate' => $date_string));
         $data = $form->get_data();
         $this->assertEquals($date_string, $data['mydate']);

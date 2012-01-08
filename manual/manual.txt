@@ -354,5 +354,37 @@ string in the HTML output of the list field.
 
 @subsection cyform-field-type-date Date input type
 
-The date input type maps a date encoded in a string to 3 HTML select inputs. The
-date string format is configurable and the selectable date range is configurable.
+The date input type maps a date encoded in a string to three HTML select inputs. The
+date string format and the selectable date range is configurable.
+
+Example:
+@code
+cy\Form::field('mydate', 'date')
+    ->format('year.month.day')
+    ->min_date(array('year' => 1990, 'month' => '01', 'day' => '15'))
+    ->max_date('now')
+@endcode
+
+If you call <code>cy\Form::get_data()</code> on a form instance that has a date type
+field then the resulting value of the corresponding field will always be a string
+formatted according to the given format. This format should contain the
+<code>year</code>, <code>month</code> and <code>day</code> string segments, and it
+can contain any further characters (in the example above we used dots). In
+the resulting date string these substrings will be replaced with the entered
+date value segments, the year is always 4-characters long, month and day are
+always 2-character long. The default date format is <code>'year-month-day'</code>
+but it can be changed by changing the value of the \c cyclone\form\model\field\DateField::$default_format
+static property. <em>Note: the date format string does not affect the UI, it is
+only related to the generated date string.</em>. Important: if you set the
+data of the field (see later) then the date in the data property should be in
+the same format too, since the field handler will match the data value against the
+regular expression generated from the date format (passed to the field model).
+
+
+The date range can be specified basicly using 3-item associative arrays where
+the array keys should be the followings: <code>'year'</code>, <code>'month'</code>
+and <code>'day'</code>. Alternatively it is possible to pass the string
+value <code>'now'</code> to specify the current date, so in the example above
+<code>'now'</code> is a shortcut for <code>array('year' => date('Y'), 'month' => date('m'), 'day' => date('d'))</code>.
+
+
