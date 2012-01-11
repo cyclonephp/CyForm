@@ -30,6 +30,10 @@ class BasicField {
 
     public $errors = array();
 
+    /**
+     * @param string $type
+     * @param string $name
+     */
     public function  __construct($type, $name = NULL) {
         $this->type = $type;
         $this->name = $name;
@@ -37,8 +41,8 @@ class BasicField {
 
     /**
      *
-     * @param string $name
-     * @return CyForm_Model_Field
+     * @param string $type
+     * @return BasicField
      */
     public function type($type) {
         $this->type = $type;
@@ -47,7 +51,7 @@ class BasicField {
 
     /**
      * @param string $label
-     * @return CyForm_Model_Field
+     * @return BasicField
      */
     public function label($label) {
         $this->label = $label;
@@ -56,7 +60,7 @@ class BasicField {
 
     /**
      * @param string $description
-     * @return CyForm_Model_Field
+     * @return BasicField
      */
     public function description($description) {
         $this->description = $description;
@@ -65,7 +69,7 @@ class BasicField {
 
     /**
      * @param string $description
-     * @return CyForm_Model_Field
+     * @return BasicField
      */
     public function descr($description) {
         $this->description = $description;
@@ -74,7 +78,7 @@ class BasicField {
 
     /**
      * @param string $view
-     * @return CyForm_Model_Field
+     * @return BasicField
      */
     public function view($view) {
         $this->view = $view;
@@ -86,7 +90,7 @@ class BasicField {
      * @param mixed $validator
      * @param mixed $params
      * @param string $error_msg
-     * @return CyForm_Model_Field
+     * @return BasicField
      */
     public function validator($validator, $params = TRUE, $error_msg = NULL) {
         if (is_string($validator)) {
@@ -106,7 +110,7 @@ class BasicField {
 
     /**
      * @param mixed $on_empty
-     * @return CyForm_Model_Field
+     * @return BasicField
      */
     public function on_empty($on_empty) {
         $this->on_empty = $on_empty;
@@ -115,7 +119,7 @@ class BasicField {
 
     /**
      * @param string $on_create
-     * @return CyForm_Model_Field
+     * @return BasicField
      */
     public function on_create($on_create) {
         $this->on_create = $on_create;
@@ -125,7 +129,7 @@ class BasicField {
     /**
      *
      * @param mixed $on_edit
-     * @return CyForm_Model_Field
+     * @return BasicField
      */
     public function on_edit($on_edit) {
         $this->on_edit = $on_edit;
@@ -140,7 +144,7 @@ class BasicField {
     /**
      * @param string $key
      * @param string $value
-     * @return CyForm_Model
+     * @return BasicField
      */
     public function attribute($key, $value) {
         $this->attributes[$key] = $value;
@@ -150,7 +154,7 @@ class BasicField {
     /**
      * @param string $key
      * @param string $value
-     * @return CyForm_Model
+     * @return BasicField
      */
     public function attr($key, $value) {
         $this->attributes[$key] = $value;

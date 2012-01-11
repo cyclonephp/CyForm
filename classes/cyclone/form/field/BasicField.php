@@ -13,7 +13,7 @@ class BasicField {
 
     /**
      *
-     * @var CyForm_Model_Field the field model defined in the form definition
+     * @var cyclone\form\model\field\BasicField the field model defined in the form definition
      */
     public $_model;
 
@@ -31,13 +31,13 @@ class BasicField {
     /**
      * set at the constructor
      *
-     * @var CyForm
+     * @var cyclone\Form
      */
     protected $_form;
 
     /**
      *
-     * @var cyform configuration
+     * @var array cyform configuration
      */
     protected $_cfg;
 
@@ -45,7 +45,7 @@ class BasicField {
      *
      * @param string $name the name of the input field
      * @param array $model the field definition
-     * @param string $type the type of the HTML input
+     * @param array $cfg same as <code>cyclone\Config::inst()->get('cyform')</code>
      */
     public function  __construct(cy\Form $form, $name
             , cy\form\model\field\BasicField $model, $cfg) {
@@ -56,10 +56,10 @@ class BasicField {
 
     /**
      * Empty method. Can be overriden by subclasses if the input type represented
-     * by the subclass has got data source to be loaded. A CyForm object loads
+     * by the subclass has got data source to be loaded. A \c cyclone\Form object loads
      * the data sources of its fields on creation in most cases.
      *
-     * @usedby CyForm::init()
+     * @usedby cyclone\Form::init()
      */
     public function load_data_source() {
         
@@ -96,9 +96,9 @@ class BasicField {
      * disabled on the client side therefore weren't submitted.
      */
     public function pick_input(&$src, &$saved_data = array()) {
-        $this->value = \cyclone\Arr::get($src, $this->_model->name);
+        $this->value = cy\Arr::get($src, $this->_model->name);
         if (null === $this->value) {
-            $this->set_data(\cyclone\Arr::get($saved_data, $this->_model->name));
+            $this->set_data(cy\Arr::get($saved_data, $this->_model->name));
         }
         if ('' === $this->value) {
             $this->value = $this->_model->on_empty;
@@ -158,7 +158,7 @@ class BasicField {
         $result = call_user_func_array($callback, $params);
         if ( ! $result) {
             if ( ! isset($error)) {
-                $error = __(cy\Config::inst()->get('cyform.default_error_prefix') . $validator);
+                $error = __($this->_cfg['default_error_prefix'] . $validator);
             }
             $this->add_validation_error($validator, $error, $params);
             return FALSE;
@@ -179,7 +179,7 @@ class BasicField {
         $result = call_user_func_array($details['callback'], $params);
         if ( ! $result) {
             if ( ! array_key_exists('error', $details)) {
-                $error = __(Kohana::config('cyform.default_error_prefix') . $validator);
+                $error = __($this->_cfg['default_error_prefix'] . $validator);
             } else {
                 $error = $details['error'];
             }
@@ -224,7 +224,7 @@ class BasicField {
      * Renders the field.
      *
      * @return string
-     * @uses CyForm_Field::before_rendering()
+     * @uses BasicField::before_rendering()
      */
     public function render() {
         $this->before_rendering();
@@ -239,6 +239,11 @@ class BasicField {
         return $view->render();
     }
 
+    /**
+     * Calls \c render() .
+     *
+     * @return string
+     */
     public function __toString() {
         try {
             return $this->render();
