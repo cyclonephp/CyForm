@@ -9,7 +9,9 @@ fieldset.cyform label {
     display: inline-block;
     margin-right: 0;
     text-align: right;
-    color: #666
+    color: #666;
+    vertical-align: top;
+    padding-top: 8px;
 }
 
 fieldset.cyform input, fieldset.cyform .checkboxlist, fieldset.cyform .radiogroup
