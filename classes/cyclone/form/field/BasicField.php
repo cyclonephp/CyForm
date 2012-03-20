@@ -140,20 +140,27 @@ class BasicField {
         return $is_valid;
     }
 
+    protected function value_as_string() {
+        if (is_array($this->value))
+            throw new cy\form\Exception("cannot convert value of field '{$this->_model->name}' to string");
+
+        return (string) $this->value;
+    }
+
     protected function exec_basic_validator($validator, $details) {
         $callback = array('\cyclone\Validate', $validator);
         if (is_array($details)) {
             $params = \cyclone\Arr::get($details, 'params', array());
             if (TRUE === $params) {
-                $params = array($this->value);
+                $params = array($this->value_as_string());
             } else {
-                array_unshift($params, $this->value);
+                array_unshift($params, $this->value_as_string());
             }
             if (isset($details['error'])) {
                 $error = $details['error'];
             }
         } else {
-            $params = array($this->value);
+            $params = array($this->value_as_string());
         }
         $result = call_user_func_array($callback, $params);
         if ( ! $result) {
