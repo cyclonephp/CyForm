@@ -10,7 +10,6 @@ use cyclone as cy;
  */
 class ListField extends BasicField {
 
-    public $type = 'list';
     /**
      *
      * @var CyForm_Model_DataSource
@@ -20,7 +19,7 @@ class ListField extends BasicField {
     public $multiple;
 
     public function __construct($name = NULL) {
-        $this->name = $name;
+        parent::__construct('list', $name);
     }
 
     /**

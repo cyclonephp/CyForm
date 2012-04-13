@@ -2,6 +2,8 @@
 
 namespace cyclone\form\model\field;
 
+use cyclone as cy;
+
 /**
  * @author Bence Eros
  * @package CyForm
@@ -20,7 +22,11 @@ class BasicField {
 
     public $view;
 
-    public $validators = array();
+    /**
+     *
+     * @var \cyclone\Validation
+     */
+    public $validation;
 
     public $on_empty = '';
 
@@ -37,6 +43,7 @@ class BasicField {
     public function  __construct($type, $name = NULL) {
         $this->type = $type;
         $this->name = $name;
+        $this->validation = new cy\Validation;
     }
 
     /**
@@ -87,24 +94,13 @@ class BasicField {
 
     /**
      *
-     * @param mixed $validator
+     * @param string|callback $rule
      * @param mixed $params
      * @param string $error_msg
      * @return BasicField
      */
-    public function validator($validator, $params = TRUE, $error_msg = NULL) {
-        if (is_string($validator)) {
-            $this->validators[$validator] = array(
-                'params' => $params,
-                'error' => $error_msg
-            );
-        } else {
-            $this->validators []= array(
-                'callback' => $validator,
-                'params' => $params,
-                'error' => $error_msg
-            );
-        }
+    public function validator($rule, $params = array(), $error_msg = NULL) {
+        $this->validation->rule($rule, $params, $error_msg);
         return $this;
     }
 

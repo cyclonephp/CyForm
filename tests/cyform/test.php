@@ -94,10 +94,10 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
         $form = new cy\Form('examples/basic');
         $form->set_input(array('name' => 'hello'));
         $this->assertEquals(array(
-                    0 => 'username hello is not unique',
-                    'numeric' => 'hello: invalid number format',
-                    1 => 'username hello is not unique'
-                ), $form->_fields['name']->validation_errors);
+                    0 => 'hello: invalid number format',
+                    1 => 'username hello is not unique',
+                    2 => 'username hello is not unique'
+                ), $form->_fields['name']->_model->validation->errors);
     }
 
     public function testResult() {

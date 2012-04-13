@@ -125,6 +125,11 @@ class BasicField {
     public function validate() {
         $policy = $this->_cfg['validation_policy'];
         $is_valid = TRUE;
+        $this->_model->validation
+                ->fail_on_first($policy == 'fail_on_first')
+                ->data($this->value);
+        return $this->_model->validation->validate();
+        //foreach ($this->_model->validation)
         foreach ($this->_model->validators as $validator => $details) {
             if (is_int($validator)) { // custom callback validator
                 $valid = $this->exec_callback_validator($validator, $details);
@@ -210,7 +215,7 @@ class BasicField {
      * @usedby CyForm_Field::render()
      */
     protected function before_rendering() {
-        $this->_model->errors = $this->validation_errors;
+        $this->_model->errors = $this->_model->validation->errors;
         
         if (( ! $this->_form->edit_mode()
                 && 'disable' == $this->_model->on_create)
