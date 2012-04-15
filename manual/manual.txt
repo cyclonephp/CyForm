@@ -84,10 +84,10 @@ return cy\Form::model()->theme('cyform/daffodil')
 
 The  basic semantics of the above form definition are the followings:
 <ul>
-	<li><tt>cy\Form::model()</tt> is a factory method that creates an empty \c cyclone\form\Model instance.
+	<li><tt>cy\Form::model()</tt> is a factory method that creates an empty @c cyclone\form\Model instance.
 		All the fields and attributes of the form will be added to this object using chained accessor
 		method calls.</li>
-	<li>the \c cyclone\form\Model::theme() will define the root path of the HTML templates to be used when rendering
+	<li>the @c cyclone\form\Model::theme() will define the root path of the HTML templates to be used when rendering
 		the form. The themes may define not only HTML templates but css and maybe javascript files too. For
 		example in our example CyForm will add the <tt>assets/css/cyform/daffodil.css</tt> and 
 		<tt>assets/js/cyform/daffodil.js</tt> files to the asset pool if they exists.
@@ -97,8 +97,8 @@ The  basic semantics of the above form definition are the followings:
 		templates at all.
 	<li>the form model has got a <tt>$title</tt> property (handled by the <tt>handle()</tt> setter), but it doesn't have any special meaning: it will
 		be rendered above the form output.</li>
-	<li>the @c cyclone\form\Model::field() calls accept a \c cyclone\form\model\field\BasicField instance.
-		These instances are created by \c cyclone\Form::field() static factory method calls, which accepts
+	<li>the @c cyclone\form\Model::field() calls accept a @c cyclone\form\model\field\BasicField instance.
+		These instances are created by @c cyclone\Form::field() static factory method calls, which accepts
 		2 parameters: the name of the property of the business entity which the input should handle, and the
 		type of the input. The latter one must be a string identifying a form type that can be handled by
 		CyForm - these input types doesn't match exactly the HTML input types, it will be discussed later.
@@ -173,7 +173,7 @@ the field types one by one.
 
 The basic field types are the followings: text, textarea, password, hidden and submit.
 These can be created using <code>cy\Form::field(&lt;field-name&gt;, &lt;field-type&gt;)</code>
-calls in the model definition (which will return a  \c cyclone\form\model\field\BasicField instance).
+calls in the model definition (which will return a  @c cyclone\form\model\field\BasicField instance).
 The <code>field-type</code> parameter defaults to
 'text', passing 'textarea', 'password' or 'submit' will also create the corresponding
 basic field model. The <code>field-name</code> parameter must be a string, or
@@ -181,7 +181,7 @@ optionally <code>NULL</code> (probably you won't need to give a name for the sub
 <br/>
 The basic field types only differ in their type and theis HTML output, otherwise
 they share exactly the same properties which are recommended to be set using
-the chainable setter methods of \c cyclone\form\model\field\BasicField class.
+the chainable setter methods of @c cyclone\form\model\field\BasicField class.
 
 The important subset of these properties is the following:
 <ul>
@@ -205,13 +205,13 @@ The important subset of these properties is the following:
 </ul>
 
 All the other - more complex - field type models are inherited from
-\c \cyclone\form\model\field\BasicField therefore all these properties exist the
+@c \cyclone\form\model\field\BasicField therefore all these properties exist the
 futher field types.
 
 @subsection cyform-field-type-list List field type
 
 List type form field models can be created using <code>cy\Form::field(&lt;field-name&gt;, 'list')</code>
-calls in the form model definition. These calls will return a \c cyclone\form\model\field\ListField
+calls in the form model definition. These calls will return a @c cyclone\form\model\field\ListField
 instance. A list type field means a list of possible values that can be filtered
 (selected) by the user. Generally there are three kind of inputs in HTML to enter such data:
 <ul>
@@ -307,7 +307,7 @@ cy\Form::field('groups', 'list')
 )
 @endcode
 
-Data sources are represented by \c cyclone\form\model\DataSource instances
+Data sources are represented by @c cyclone\form\model\DataSource instances
 which have three important properties:
 <ul>
     <li>a callback that will return an array of selectable items. Note that
@@ -373,7 +373,7 @@ can contain any further characters (in the example above we used dots). In
 the resulting date string these substrings will be replaced with the entered
 date value segments, the year is always 4-characters long, month and day are
 always 2-character long. The default date format is <code>'year-month-day'</code>
-but it can be changed by changing the value of the \c cyclone\form\model\field\DateField::$default_format
+but it can be changed by changing the value of the @c cyclone\form\model\field\DateField::$default_format
 static property. <em>Note: the date format string does not affect the UI, it is
 only related to the generated date string.</em>. Important: if you set the
 data of the field (see later) then the date in the data property should be in
