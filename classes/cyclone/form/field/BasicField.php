@@ -56,7 +56,7 @@ class BasicField {
 
     /**
      * Empty method. Can be overriden by subclasses if the input type represented
-     * by the subclass has got data source to be loaded. A \c cyclone\Form object loads
+     * by the subclass has got data source to be loaded. A @c cyclone\Form object loads
      * the data sources of its fields on creation in most cases.
      *
      * @usedby cyclone\Form::init()
@@ -129,20 +129,6 @@ class BasicField {
                 ->fail_on_first($policy == 'fail_on_first')
                 ->data($this->value);
         return $this->_model->validation->validate();
-        //foreach ($this->_model->validation)
-        foreach ($this->_model->validators as $validator => $details) {
-            if (is_int($validator)) { // custom callback validator
-                $valid = $this->exec_callback_validator($validator, $details);
-            } else { // normal validator - using the Validate class
-                $valid = $this->exec_basic_validator($validator, $details);
-            }
-            if ( ! $valid ) {
-                if ($policy == 'fail_on_first')
-                    return FALSE;
-                $is_valid = FALSE;
-            }
-        }
-        return $is_valid;
     }
 
     protected function value_as_string() {
@@ -252,7 +238,7 @@ class BasicField {
     }
 
     /**
-     * Calls \c render() .
+     * Calls @c render() .
      *
      * @return string
      */
