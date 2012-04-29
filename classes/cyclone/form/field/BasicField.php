@@ -6,7 +6,7 @@ use cyclone as cy;
 use cyclone\view;
 
 /**
- * @author Bence Eros <crystal@cyclonephp.com>
+ * @author Bence Eros <crystal@cyclonephp.org>
  * @package CyForm
  */
 class BasicField {

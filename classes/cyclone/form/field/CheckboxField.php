@@ -7,7 +7,7 @@ use cyclone\form\model\field;
 use cyclone as cy;
 
 /**
- * @author Bence Eros <crystal@cyclonephp.com>
+ * @author Bence Eros <crystal@cyclonephp.org>
  * @package CyForm
  */
 class CheckboxField extends BasicField {
