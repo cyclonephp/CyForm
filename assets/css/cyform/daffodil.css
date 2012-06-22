@@ -21,6 +21,12 @@ fieldset.cyform input, fieldset.cyform .checkboxlist, fieldset.cyform .radiogrou
     text-align: left
 }
 
+fieldset.cyform span.descr {
+    display: block;
+    font-size: 80%;
+    color: gray;
+}
+
 
 fieldset.cyform .checkboxlist input, fieldset.cyform .radiogroup input {
     width: 10%
