@@ -24,6 +24,7 @@ class DateField extends BasicField {
 
     public function  __construct(cy\Form $form, $name, cy\form\model\field\BasicField $model, $cfg) {
         parent::__construct($form, $name, $model, 'date', $cfg);
+
     }
 
     public function  pick_input(&$src, &$saved_data = array()) {

@@ -16,6 +16,12 @@ class DateField extends BasicField {
 
     public $format;
 
+    public $value = array(
+        'year' => NULL,
+        'month' => NULL,
+        'day' => NULL
+    );
+
     public function  __construct($name = NULL) {
         parent::__construct('date', $name);
         $this->format = self::$default_format;
@@ -47,4 +53,16 @@ class DateField extends BasicField {
         $this->format = $format;
         return $this;
     }
+
+    public function value($value) {
+        if ( ! is_array($value)
+            || ! (isset($value['year'])
+                && isset($value['month'])
+                && isset($value['day'])))
+            throw new \cyclone\form\Exception("date input default value must be an array with 'year', 'month' and 'day' keys");
+
+        return parent::value($value);
+    }
+
+
 }

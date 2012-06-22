@@ -52,6 +52,7 @@ class BasicField {
         $this->_form = $form;
         $this->_model = $model;
         $this->_cfg = $cfg;
+        $this->value = $model->value;
     }
 
     /**

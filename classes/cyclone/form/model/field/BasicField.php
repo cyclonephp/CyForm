@@ -37,6 +37,13 @@ class BasicField {
     public $errors = array();
 
     /**
+     * The default value of the field.
+     *
+     * @var mixed
+     */
+    public $value;
+
+    /**
      * @param string $type
      * @param string $name
      */
@@ -154,6 +161,15 @@ class BasicField {
      */
     public function attr($key, $value) {
         $this->attributes[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * @param $value
+     * @return BasicField
+     */
+    public function value($value) {
+        $this->value = $value;
         return $this;
     }
 }
