@@ -51,15 +51,11 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
                 , Form::field('chb', 'checkbox')
                 , cy\Config::inst()->get('cyform'));
 
-        $arr = array(
-            'chb' => 'on'
-        );
-        $checkbox->pick_input($arr);
+        $checkbox->set_input('on');
 
         $this->assertTrue($checkbox->get_data());
 
-        $arr = array();
-        $checkbox->pick_input($arr);
+        $checkbox->set_input(NULL);
 
         $this->assertFalse($checkbox->get_data());
     }
@@ -146,9 +142,7 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
                 );
 
         $form->set_input(array(
-           'mydate_year' => $input['year'],
-           'mydate_month' => $input['month'],
-           'mydate_day' => $input['day']
+           'mydate' => $input
         ));
         $data = $form->get_data();
         $this->assertEquals($data['mydate'], $date_string);
@@ -195,6 +189,10 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
         $form->set_data(array('name' => 'username'));
         $form->render();
         $this->assertEquals('disabled', $form->_fields['name']->_model->attributes['disabled']);
+    }
+
+    public function test_subform() {
+
     }
 
 

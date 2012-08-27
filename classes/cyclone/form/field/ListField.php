@@ -14,9 +14,9 @@ class ListField extends BasicField {
         parent::__construct($form, $name, $model, 'list', $cfg);
     }
 
-    public function pick_input(&$src, &$saved_data = array()) {
-        $this->value = cy\Arr::get($src, $this->_model->name);
-        if (null === $this->value) {
+    public function set_input($src, $saved_data = array()) {
+        $this->value = $src;
+        if (NULL === $this->value) {
             $this->set_data(cy\Arr::get($saved_data, $this->_model->name));
         }
         if (NULL === $this->value) {

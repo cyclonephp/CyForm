@@ -243,8 +243,8 @@ class Form {
         } else {
             $saved_data = array();
         }
-        foreach ($this->_fields as $field) {
-            $field->pick_input($src, $saved_data);
+        foreach ($this->_fields as $field_name => $field) {
+            $field->set_input(isset($src[$field_name]) ? $src[$field_name] : NULL, $saved_data);
         }
         if ($validate) {
             return $this->validate();

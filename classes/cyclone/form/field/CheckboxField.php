@@ -33,7 +33,7 @@ class CheckboxField extends BasicField {
         }
     }
 
-    public function pick_input(&$src, &$saved_data = array()) {
-        $this->value = array_key_exists($this->_model->name, $src);
+    public function set_input($src, $saved_data = array()) {
+        $this->value = $src !== NULL;
     }
 }

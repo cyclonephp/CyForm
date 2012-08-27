@@ -11,9 +11,9 @@ use cyclone as cy;
 class DateField extends BasicField {
 
     protected $suffixes = array(
-        'year' => '_year',
-        'month' => '_month',
-        'day' => '_day'
+        'year' => 'year',
+        'month' => 'month',
+        'day' => 'day'
     );
 
     public $value = array(
@@ -27,16 +27,16 @@ class DateField extends BasicField {
 
     }
 
-    public function  pick_input(&$src, &$saved_data = array()) {
+    public function set_input($src, $saved_data = array()) {
         $this->value = array(
-            'year' => $src[$this->get_segment_name('year')],
-            'month' => $src[$this->get_segment_name('month')],
-            'day' => $src[$this->get_segment_name('day')]
+            'year' => $src['year'],
+            'month' => $src['month'],
+            'day' => $src['day']
         );
     }
 
     protected function get_segment_name($segment) {
-        return $this->_model->name.$this->suffixes[$segment];
+        return $this->_model->name. '[' .$this->suffixes[$segment] . ']';
     }
 
     public function  set_data($val) {
