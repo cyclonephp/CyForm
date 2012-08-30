@@ -117,13 +117,6 @@ class BasicField {
         $src[$this->_model->name] = $this->value;
     }
 
-    /**
-     * if the validation is set up for the field, then executes all of the
-     * validators by calling CyForm_Input::exec_basic_validator() and
-     * CyForm_Input::exec_callback_validator().
-     *
-     * Stores the error messages in the <code>CyForm_Input::validation_errors</code> array.
-     */
     public function validate() {
         $policy = $this->_cfg['validation_policy'];
         $this->_model->validation
@@ -137,62 +130,6 @@ class BasicField {
             throw new cy\form\Exception("cannot convert value of field '{$this->_model->name}' to string");
 
         return (string) $this->value;
-    }
-
-    protected function exec_basic_validator($validator, $details) {
-        $callback = array('\cyclone\Validate', $validator);
-        if (is_array($details)) {
-            $params = \cyclone\Arr::get($details, 'params', array());
-            if (TRUE === $params) {
-                $params = array($this->value_as_string());
-            } else {
-                array_unshift($params, $this->value_as_string());
-            }
-            if (isset($details['error'])) {
-                $error = $details['error'];
-            }
-        } else {
-            $params = array($this->value_as_string());
-        }
-        $result = call_user_func_array($callback, $params);
-        if ( ! $result) {
-            if ( ! isset($error)) {
-                $error = __($this->_cfg['default_error_prefix'] . $validator);
-            }
-            $this->add_validation_error($validator, $error, $params);
-            return FALSE;
-        }
-        return TRUE;
-    }
-
-    protected function exec_callback_validator($validator, $details) {
-        if ( ! is_array($details))
-            throw new \cyclone\form\Exception($details.' is not an array');
-
-        if ( ! array_key_exists('params', $details)) {
-            $params = array();
-        } else {
-            $params = $details['params'];
-        }
-        array_unshift($params, $this->value);
-        $result = call_user_func_array($details['callback'], $params);
-        if ( ! $result) {
-            if ( ! array_key_exists('error', $details)) {
-                $error = __($this->_cfg['default_error_prefix'] . $validator);
-            } else {
-                $error = $details['error'];
-            }
-            $this->add_validation_error($validator, $error, $params);
-            return FALSE;
-        }
-        return TRUE;
-    }
-
-    protected function add_validation_error($validator, $error_template, $params) {
-        foreach ($params as $k => $v) {
-            $error_template = str_replace(':' . ($k + 1), $v, $error_template);
-        }
-        $this->validation_errors[$validator] = $error_template;
     }
 
     public function get_view_data() {
