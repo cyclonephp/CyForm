@@ -48,32 +48,6 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
         $this->assertInstanceOf($input_class, $form->_fields['name']);
     }
 
-    public function test_input_checkbox() {
-        $checkbox = new cy\form\field\CheckboxField(new Form(Form::model()), ''
-                , Form::field('chb', 'checkbox')
-                , cy\Config::inst()->get('cyform'));
-
-        $checkbox->set_input('on');
-
-        $this->assertTrue($checkbox->get_data());
-
-        $checkbox->set_input(NULL);
-
-        $this->assertFalse($checkbox->get_data());
-    }
-
-    public function test_data_sourceLoading() {
-        $form = new Form(Form::model()
-                ->field(Form::field('name', 'list')
-                ->source(Form::source(array($this, 'mockDataSource'))
-                    ->val('id')
-                    ->text('text'))));
-        
-        foreach ( $this->mockDataSource() as $row) {
-            $this->assertEquals($form->_fields['name']->_model->items[$row['id']], $row['text']);
-        }
-    }
-
     public function test_load_input() {
         $form = new Form(Form::model()
                 ->field(Form::field('name1', 'text'))
@@ -132,29 +106,6 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
         $form->set_input(array('name1' => ''));
         $data = $form->get_data();
         $this->assertNull($data['name1']);
-    }
-
-    /**
-     *
-     * @dataProvider provider_field_date
-     */
-    public function test_field_date($date_string, $input, $date_format) {
-        $form = new Form(Form::model()
-                ->field(Form::field('mydate', 'date')->format($date_format))
-                );
-
-        $form->set_input(array(
-           'mydate' => $input
-        ));
-        $data = $form->get_data();
-        $this->assertEquals($data['mydate'], $date_string);
-
-        $form = new Form(Form::model()
-                ->field(Form::field('mydate', 'date')->format($date_format))
-                );
-        $form->set_data(array('mydate' => $date_string));
-        $data = $form->get_data();
-        $this->assertEquals($date_string, $data['mydate']);
     }
 
     public function test_on_create() {
@@ -265,22 +216,6 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
         $rval []= array($fields, $before_data, $progress_id_required, $input, $after_data);
 
         return $rval;
-    }
-
-    public function provider_field_date() {
-        return array(
-            array('2010-09-17', array('year' => '2010', 'month' => '09', 'day' => '17'), 'year-month-day'),
-            array('09/17/2010', array('year' => '2010', 'month' => '09', 'day' => '17'), 'month/day/year'),
-            array('2010.09.17', array('year' => '2010', 'month' => '09', 'day' => '17'), 'year.month.day')
-        );
-    }
-
-
-    public function mockDataSource() {
-        return array(
-            array('id' => 1, 'text' => 'txt1'),
-            array('id' => 2, 'text' => 'txt2')
-        );
     }
 
     public static function custom_callback($username) {
