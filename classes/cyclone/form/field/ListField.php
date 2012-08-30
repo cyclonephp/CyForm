@@ -83,7 +83,7 @@ class ListField extends BasicField {
             'attributes' => array(
                 'name' => $this->_model->name
             ),
-            'errors' => $this->validation_errors,
+            'errors' => $this->_model->validation->errors,
             'label' => $this->_model->label,
             'description' => $this->_model->description,
             'items' => $this->_model->items,
