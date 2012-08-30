@@ -78,20 +78,22 @@ class ListField extends BasicField {
         return parent::value_as_string();
     }
 
-    protected function before_rendering() {
-        $this->_model->errors = $this->validation_errors;
+    public function get_view_data() {
+        $rval = array(
+            'attributes' => array(
+                'name' => $this->_model->name
+            )
+        );
 
         if ($this->_model->multiple && is_null($this->value)) {
             $this->value = array();
         }
-        
-        $this->_model->attributes['name'] = $this->_model->name;
 
         if ($this->_model->multiple) {
-            $this->_model->attributes['name'] .= '[]';
-            $this->_model->values = $this->value;
+            $rval['attributes']['name'] .= '[]';
+            $rval['values'] = $this->value;
         } else {
-            $this->_model->attributes['value'] = $this->value;
+            $rval['attributes']['value'] = $this->value;
         }
 
         if (NULL === $this->_model->view) {
@@ -99,16 +101,18 @@ class ListField extends BasicField {
         }
         if ($this->_model->view == 'buttons') {
             $this->_model->view = $this->_model->multiple ? 'checkboxlist' : 'radiogroup';
-            unset($this->_model->attributes['value']);
+            unset($rval['attributes']['value']);
         } elseif ($this->_model->view == 'select' && $this->_model->multiple) {
-            $this->_model->attributes['multiple'] = 'multiple';
+            $rval['attributes']['multiple'] = 'multiple';
         } elseif ($this->_model->view == 'select') {
             if ($this->_model->multiple) {
-                $this->_model->attributes['multiple'] = 'multiple';
+                $rval['attributes']['multiple'] = 'multiple';
             } else {
-                $this->_model->value = $this->value;
+                $rval['value'] = $this->value;
             }
         }
+
+        return $rval;
     }
     
 }
