@@ -1,10 +1,12 @@
 <?php
 
+namespace cyclone\form;
+
 use cyclone as cy;
 use cyclone\Form;
 
 
-class CyForm_Test extends Kohana_Unittest_TestCase {
+class CyFormTest extends \Kohana_Unittest_TestCase {
 
     /**
      * @expectedException \cyclone\form\Exception
@@ -168,8 +170,8 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
                 ->field(Form::field('name', 'text')
                         ->on_create('disable'))
         );
-        $form->render();
-        $this->assertEquals('disabled', $form->_fields['name']->_model->attributes['disabled']);
+        $view_data = $form->_fields['name']->get_view_data();
+        $this->assertEquals('disabled', $view_data['attributes']['disabled']);
     }
 
     public function test_on_edit() {
@@ -187,8 +189,8 @@ class CyForm_Test extends Kohana_Unittest_TestCase {
         );
         
         $form->set_data(array('name' => 'username'));
-        $form->render();
-        $this->assertEquals('disabled', $form->_fields['name']->_model->attributes['disabled']);
+        $view_data = $form->_fields['name']->get_view_data();
+        $this->assertEquals('disabled', $view_data['attributes']['disabled']);
     }
 
     public function test_subform() {

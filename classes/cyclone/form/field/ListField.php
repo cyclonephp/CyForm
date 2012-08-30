@@ -37,7 +37,7 @@ class ListField extends BasicField {
             $val_field = $data_source->val_field;
             $text_field = $data_source->text_field;
 
-            if (empty($result))
+            if (count($result) == 0)
                 return;
 
             if (is_array(next($result))) {

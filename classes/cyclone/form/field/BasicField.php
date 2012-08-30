@@ -3,6 +3,7 @@
 namespace cyclone\form\field;
 
 use cyclone as cy;
+use cyclone\Form;
 use cyclone\view;
 
 /**
@@ -47,7 +48,7 @@ class BasicField {
      * @param array $model the field definition
      * @param array $cfg same as <code>cyclone\Config::inst()->get('cyform')</code>
      */
-    public function  __construct(cy\Form $form, $name
+    public function  __construct(Form $form, $name
             , cy\form\model\field\BasicField $model, $cfg) {
         $this->_form = $form;
         $this->_model = $model;
@@ -125,7 +126,6 @@ class BasicField {
      */
     public function validate() {
         $policy = $this->_cfg['validation_policy'];
-        $is_valid = TRUE;
         $this->_model->validation
                 ->fail_on_first($policy == 'fail_on_first')
                 ->data($this->value);
@@ -167,7 +167,7 @@ class BasicField {
 
     protected function exec_callback_validator($validator, $details) {
         if ( ! is_array($details))
-            throw new cy\cyform\Exception($details.' is not an array');
+            throw new \cyclone\form\Exception($details.' is not an array');
 
         if ( ! array_key_exists('params', $details)) {
             $params = array();
@@ -195,28 +195,26 @@ class BasicField {
         $this->validation_errors[$validator] = $error_template;
     }
 
-    /**
-     * Prepares the field model for rendering.
-     *
-     * @return void
-     * @usedby CyForm_Field::render()
-     */
-    protected function before_rendering() {
-        $this->_model->errors = $this->_model->validation->errors;
-        
+    public function get_view_data() {
+        $rval = array(
+            'attributes' => array()
+        );
+        $rval['errors'] = $this->_model->validation->errors;
+
         if (( ! $this->_form->edit_mode()
-                && 'disable' == $this->_model->on_create)
+            && 'disable' == $this->_model->on_create)
             || ($this->_form->edit_mode()
                 && 'disable' == $this->_model->on_edit)) {
-            
-            $this->_model->attributes['disabled'] = 'disabled';
+
+            $rval['attributes']['disabled'] = 'disabled';
         }
-        $this->_model->attributes['value'] = $this->value;
-        $this->_model->attributes['name'] = $this->_model->name;
-        $this->_model->attributes['type'] = $this->_model->type;
+        $rval['attributes']['value'] = $this->value;
+        $rval['attributes']['name'] = $this->_model->name;
+        $rval['attributes']['type'] = $this->_model->type;
         if (NULL === $this->_model->view) {
             $this->_model->view = $this->_model->type;
         }
+        return $rval;
     }
 
     /**
@@ -226,14 +224,14 @@ class BasicField {
      * @uses BasicField::before_rendering()
      */
     public function render() {
-        $this->before_rendering();
+        $view_data = $this->get_view_data();
         try {
             $view = new view\PHPView($this->_form->_model->theme
                 .DIRECTORY_SEPARATOR.$this->_model->view,
-                (array) $this->_model);
+                $view_data);
         } catch (view\ViewException $ex) {
-            $view = new view\PHPView(cy\Form::DEFAULT_THEME . DIRECTORY_SEPARATOR
-                    . $this->_model->view, (array) $this->_model);
+            $view = new view\PHPView(Form::DEFAULT_THEME . DIRECTORY_SEPARATOR
+                    . $this->_model->view, $view_data);
         }
         return $view->render();
     }
