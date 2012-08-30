@@ -65,7 +65,7 @@ class Form {
      */
     public $_model;
 
-    public $_fields = array();
+    protected $_fields = array();
 
     /**
      *
@@ -98,6 +98,31 @@ class Form {
         $this->_cfg = \cyclone\Config::inst()->get('cyform');
         $this->init($load_data_sources);
         $this->add_assets();
+    }
+
+    /**
+     * <p>Returns the field handler object with the given name.</p>
+     *
+     * <p>Modifications on the returned object won't affect the form's behavior.</p>
+     *
+     * @param $name
+     * @return  \cyclone\form\field\BasicField
+     * @throws form\Exception
+     */
+    public function get_field($name) {
+        if ( ! isset($this->_fields[$name]))
+            throw new form\Exception("cannot find form field '$name'");
+
+        return clone $this->_fields[$name];
+    }
+
+    /**
+     * Returns the number of fields in this form.
+     *
+     * @return int
+     */
+    public function get_field_count() {
+        return count($this->_fields);
     }
 
     /**

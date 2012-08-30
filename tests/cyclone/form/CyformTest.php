@@ -21,8 +21,8 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
         $form = new Form(Form::model()
                 ->field(Form::field('basic', 'text'))
         );
-        $this->assertEquals(1, count($form->_fields));
-        $this->assertTrue($form->_fields['basic'] instanceof cy\form\field\BasicField);
+        $this->assertEquals(1, $form->get_field_count());
+        $this->assertTrue($form->get_field('basic') instanceof cy\form\field\BasicField);
     }
 
     public function provider_explicit_input() {
@@ -45,7 +45,7 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
     public function test_explicit_input($field_type, $input_class) {
         $form = new Form(Form::model()
                 ->field(Form::field('name', $field_type)));
-        $this->assertInstanceOf($input_class, $form->_fields['name']);
+        $this->assertInstanceOf($input_class, $form->get_field('name'));
     }
 
     public function test_load_input() {
@@ -59,8 +59,8 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
             'name2' => 'val2',
             'name3' => 'val3'
         ), false);
-        $this->assertEquals(count($form->_fields), 2);
-        $this->assertEquals($form->_fields['name1']->get_data(), 'val1');
+        $this->assertEquals($form->get_field_count(), 2);
+        $this->assertEquals($form->get_field('name1')->get_data(), 'val1');
     }
 
     public function test_validation() {
@@ -70,7 +70,7 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
                     0 => 'hello: invalid number format',
                     1 => 'username hello is not unique',
                     2 => 'username hello is not unique'
-                ), $form->_fields['name']->_model->validation->errors);
+                ), $form->get_field('name')->_model->validation->errors);
     }
 
     public function test_result() {
@@ -115,13 +115,18 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
         );
 
         $form->render();
-        $this->assertFalse(array_key_exists('name', $form->_fields));
+        try {
+            $form->get_field('name');
+            $this->fail();
+        } catch (Exception $ex) {
+
+        }
 
         $form = new Form(Form::model()
                 ->field(Form::field('name', 'text')
                         ->on_create('disable'))
         );
-        $view_data = $form->_fields['name']->get_view_data();
+        $view_data = $form->get_field('name')->get_view_data();
         $this->assertEquals('disabled', $view_data['attributes']['disabled']);
     }
 
@@ -133,14 +138,19 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
 
         $form->set_data(array('name' => 'username'));
         $form->render();
-        $this->assertFalse(array_key_exists('name', $form->_fields));
+        try {
+            $form->get_field('name');
+            $this->fail();
+        } catch (Exception $ex) {
+
+        }
         $form = new Form(Form::model()
                 ->field(Form::field('name', 'text')
                         ->on_edit('disable'))
         );
         
         $form->set_data(array('name' => 'username'));
-        $view_data = $form->_fields['name']->get_view_data();
+        $view_data = $form->get_field('name')->get_view_data();
         $this->assertEquals('disabled', $view_data['attributes']['disabled']);
     }
 
@@ -163,12 +173,19 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
         $form_before_submit->set_data($before_data);
 
         if ($progress_id_required) {
-            $this->assertArrayHasKey($cfg['progress_key'], $form_before_submit->_fields);
+            try {
+                $form_before_submit->get_field($cfg['progress_key']);
+            } catch (Excepion $ex) {
+               $this->fail();
+            }
         } else {
-            $form_fields = $form_before_submit->_fields;
             foreach ($before_data as $k => $v) {
-                $this->assertArrayHasKey($k, $form_fields);
-                $this->assertEquals($form_fields[$k]->get_data(), $v);
+                try {
+                    $field = $form_before_submit->get_field($k);
+                    $this->assertEquals($v, $field->get_data());
+                } catch (Exception $ex) {
+                    $this->fail();
+                }
             }
         }
 
@@ -176,7 +193,7 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
         $form_model->fields = $fields;
         $form_after_submit = new Form($form_model);
         if ($progress_id_required) {
-            $input[$cfg['progress_key']] = $form_before_submit->_fields[$cfg['progress_key']]->get_data();
+            $input[$cfg['progress_key']] = $form_before_submit->get_field($cfg['progress_key'])->get_data();
         }
         $form_after_submit->set_input($input);
         $result = $form_after_submit->get_data();
