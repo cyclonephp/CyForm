@@ -63,7 +63,10 @@ class DateField extends BasicField {
 
     public function get_view_data() {
         $rval = array(
-            'errors' => $this->validation_errors
+            'errors' => $this->validation_errors,
+            'label' => $this->_model->label,
+            'description' => $this->_model->description,
+            'name' => $this->_model->name
         );
 
         if (NULL === $this->_model->view) {
@@ -120,7 +123,7 @@ class DateField extends BasicField {
         }
         $rval['segments'] []= $day_seg;
 
-        return rval;
+        return $rval;
     }
 
     protected function extract_date_definition($key) {

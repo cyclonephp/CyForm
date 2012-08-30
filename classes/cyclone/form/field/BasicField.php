@@ -138,7 +138,9 @@ class BasicField {
             'attributes' => array(),
             'errors' => $model->validation->errors,
             'label' => $model->label,
-            'description' => $model->description
+            'description' => $model->description,
+            'name' => $model->name,
+            'value' => $this->value
         );
 
         if (( ! $this->_form->edit_mode()

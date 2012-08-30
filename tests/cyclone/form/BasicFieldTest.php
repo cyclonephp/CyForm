@@ -21,6 +21,7 @@ class BasicFieldTest extends \Kohana_Unittest_TestCase {
         $this->assertEquals('text', $attrs['type']);
         $this->assertEquals('my descr', $view_data['description']);
         $this->assertEquals('my label', $view_data['label']);
+        $this->assertEquals('name', $view_data['name']);
     }
 
 }

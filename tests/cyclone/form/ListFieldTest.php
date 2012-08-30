@@ -42,6 +42,11 @@ class ListFieldTest extends \Kohana_Unittest_TestCase {
         $this->assertEquals('multiple', $attrs['multiple']);
         $this->assertEquals('my label', $view_data['label']);
         $this->assertEquals('my description', $view_data['description']);
+        $this->assertEquals(array(
+            0 => 'itm1',
+            1 => 'itm2',
+            3 => 'itm3'
+        ), $view_data['items']);
     }
 
     public function test_data_sourceLoading() {

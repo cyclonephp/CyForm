@@ -85,7 +85,9 @@ class ListField extends BasicField {
             ),
             'errors' => $this->validation_errors,
             'label' => $this->_model->label,
-            'description' => $this->_model->description
+            'description' => $this->_model->description,
+            'items' => $this->_model->items,
+            'name' => $this->_model->name
         );
 
         if ($this->_model->multiple && is_null($this->value)) {
