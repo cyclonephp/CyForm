@@ -32,11 +32,16 @@ class ListFieldTest extends \Kohana_Unittest_TestCase {
                 ->value(1)
                 ->view('select')
                 ->multiple(TRUE)
+                ->label('my label')
+                ->description('my description')
             )
         );
         $view_data = $form->get_field('mylist')->get_view_data();
         $attrs = $view_data['attributes'];
         $this->assertEquals('mylist[]', $attrs['name']);
+        $this->assertEquals('multiple', $attrs['multiple']);
+        $this->assertEquals('my label', $view_data['label']);
+        $this->assertEquals('my description', $view_data['description']);
     }
 
     public function test_data_sourceLoading() {

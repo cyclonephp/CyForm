@@ -133,23 +133,27 @@ class BasicField {
     }
 
     public function get_view_data() {
+        $model = $this->_model;
         $rval = array(
-            'attributes' => array()
+            'attributes' => array(),
+            'errors' => $model->validation->errors,
+            'label' => $model->label,
+            'description' => $model->description
         );
-        $rval['errors'] = $this->_model->validation->errors;
 
         if (( ! $this->_form->edit_mode()
-            && 'disable' == $this->_model->on_create)
+            && 'disable' == $model->on_create)
             || ($this->_form->edit_mode()
-                && 'disable' == $this->_model->on_edit)) {
+                && 'disable' == $model->on_edit)) {
 
             $rval['attributes']['disabled'] = 'disabled';
         }
         $rval['attributes']['value'] = $this->value;
-        $rval['attributes']['name'] = $this->_model->name;
-        $rval['attributes']['type'] = $this->_model->type;
-        if (NULL === $this->_model->view) {
-            $this->_model->view = $this->_model->type;
+        $rval['attributes']['name'] = $model->name;
+        $rval['attributes']['type'] = $model->type;
+
+        if (NULL === $model->view) {
+            $model->view = $model->type;
         }
         return $rval;
     }

@@ -9,7 +9,8 @@
     </label>
     <div class="checkboxlist">
     <? foreach ($items as $val => $text) : ?>
-        <input type="checkbox" <?= \cyclone\HTML::attributes($attributes) ?> value="<?= $val ?>"<? if (in_array($val, $values)) echo ' checked="checked"'?>/><?= $text ?><br/>
+        <input type="checkbox" <?= \cyclone\HTML::attributes($attributes) ?> value="<?= $val ?>"<?
+            if (in_array($val, $values)) echo ' checked="checked"'?>/><?= $text ?><br/>
     <? endforeach; ?>
     </div>
     <div class="clear"></div>

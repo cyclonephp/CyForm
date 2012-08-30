@@ -82,7 +82,10 @@ class ListField extends BasicField {
         $rval = array(
             'attributes' => array(
                 'name' => $this->_model->name
-            )
+            ),
+            'errors' => $this->validation_errors,
+            'label' => $this->_model->label,
+            'description' => $this->_model->description
         );
 
         if ($this->_model->multiple && is_null($this->value)) {
@@ -102,8 +105,6 @@ class ListField extends BasicField {
         if ($this->_model->view == 'buttons') {
             $this->_model->view = $this->_model->multiple ? 'checkboxlist' : 'radiogroup';
             unset($rval['attributes']['value']);
-        } elseif ($this->_model->view == 'select' && $this->_model->multiple) {
-            $rval['attributes']['multiple'] = 'multiple';
         } elseif ($this->_model->view == 'select') {
             if ($this->_model->multiple) {
                 $rval['attributes']['multiple'] = 'multiple';
