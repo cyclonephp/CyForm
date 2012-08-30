@@ -61,9 +61,11 @@ class DateField extends BasicField {
         return strtr($this->_model->format, $this->value);
     }
 
-    protected function  before_rendering() {
-        $this->_model->errors = $this->validation_errors;
-        
+    public function get_view_data() {
+        $rval = array(
+            'errors' => $this->validation_errors
+        );
+
         if (NULL === $this->_model->view) {
             $this->_model->view = 'date';
         }
@@ -84,7 +86,7 @@ class DateField extends BasicField {
                 $year_seg['items'][$y] = $y;
             }
         }
-        $this->_model->segments = array($year_seg);
+        $rval['segments'] = array($year_seg);
 
         $month_seg = array(
             'value' => $this->value['month'],
@@ -99,7 +101,7 @@ class DateField extends BasicField {
                 $month_seg['items'][$m] = $m;
             }
         }
-        $this->_model->segments []= $month_seg;
+        $rval['segments'] []= $month_seg;
 
 
 
@@ -116,7 +118,9 @@ class DateField extends BasicField {
                 $day_seg['items'][$d] = $d;
             }
         }
-        $this->_model->segments []= $day_seg;
+        $rval['segments'] []= $day_seg;
+
+        return rval;
     }
 
     protected function extract_date_definition($key) {
