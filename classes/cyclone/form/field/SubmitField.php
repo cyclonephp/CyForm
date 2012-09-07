@@ -3,6 +3,7 @@
 namespace cyclone\form\field;
 
 use cyclone as cy;
+use cyclone\Form;
 
 /**
  * @author Bence Eros <crystal@cyclonephp.org>
@@ -10,7 +11,7 @@ use cyclone as cy;
  */
 class SubmitField extends BasicField {
 
-    public function  __construct(cy\Form $form, $name, cy\form\model\field\BasicField $model, $cfg) {
+    public function  __construct(Form $form, $name, cy\form\model\field\BasicField $model, $cfg) {
         parent::__construct($form, $name, $model, 'submit', $cfg);
     }
 
@@ -31,6 +32,18 @@ class SubmitField extends BasicField {
         if (NULL === $this->_model->view) {
             $this->_model->view = 'submit';
         }
+    }
+
+    public function get_view_data() {
+        $rval = array(
+            'attributes' => $this->_model->attributes
+        );
+        if ( ! is_null($this->_model->name)) {
+            $rval['attributes']['name'] = $this->_model->name;
+        }
+        $rval['attributes']['value'] = $this->_model->label;
+
+        return $rval;
     }
 
 }

@@ -135,7 +135,7 @@ class BasicField {
     public function get_view_data() {
         $model = $this->_model;
         $rval = array(
-            'attributes' => array(),
+            'attributes' => $this->_model->attributes,
             'errors' => $model->validation->errors,
             'label' => $model->label,
             'description' => $model->description,
@@ -164,7 +164,7 @@ class BasicField {
      * Renders the field.
      *
      * @return string
-     * @uses BasicField::before_rendering()
+     * @uses BasicField::get_view_data()
      */
     public function render() {
         $view_data = $this->get_view_data();
