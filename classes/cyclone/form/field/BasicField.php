@@ -107,16 +107,6 @@ class BasicField {
         }
     }
 
-    /**
-     * the reverse of pick_val(), it pushes the current field value into the 
-     * source inputs
-     *
-     * @param array $src
-     */
-    public function push_input(&$src) {
-        $src[$this->_model->name] = $this->value;
-    }
-
     public function validate() {
         $policy = $this->_cfg['validation_policy'];
         $this->_model->validation

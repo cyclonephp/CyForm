@@ -27,12 +27,6 @@ class CheckboxField extends BasicField {
         $this->value = (boolean) $val;
     }
 
-    public function  push_input(&$src) {
-        if ($this->value) {
-            $src[$this->_model->name] = 'on';
-        }
-    }
-
     public function set_input($src, $saved_data = array()) {
         $this->value = $src !== NULL;
     }
