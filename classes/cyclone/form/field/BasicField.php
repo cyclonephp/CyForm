@@ -10,11 +10,11 @@ use cyclone\view;
  * @author Bence Eros <crystal@cyclonephp.org>
  * @package CyForm
  */
-class BasicField {
+class BasicField implements FormField {
 
     /**
      *
-     * @var cyclone\form\model\field\BasicField the field model defined in the form definition
+     * @var \cyclone\form\model\field\BasicField the field model defined in the form definition
      */
     public $_model;
 

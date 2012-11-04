@@ -23,17 +23,6 @@ class SubmitField extends BasicField {
         return null;
     }
 
-    protected function  before_rendering() {
-        
-        if ( ! is_null($this->_model->name)) {
-            $this->_model->attributes['name'] = $this->_model->name;
-        }
-        $this->_model->attributes['value'] = $this->_model->label;
-        if (NULL === $this->_model->view) {
-            $this->_model->view = 'submit';
-        }
-    }
-
     public function get_view_data() {
         $rval = array(
             'attributes' => $this->_model->attributes
@@ -42,7 +31,9 @@ class SubmitField extends BasicField {
             $rval['attributes']['name'] = $this->_model->name;
         }
         $rval['attributes']['value'] = $this->_model->label;
-
+        if (NULL === $this->_model->view) {
+            $this->_model->view = 'submit';
+        }
         return $rval;
     }
 

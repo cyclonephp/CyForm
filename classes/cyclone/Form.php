@@ -6,7 +6,9 @@ namespace cyclone;
  * @author Bence Eros <crystal@cyclonephp.org>
  * @package CyForm
  */
-class Form {
+class Form implements form\field\FormField {
+
+    public function load_data_source(){}
 
     /**
      * @return CyForm_Model
