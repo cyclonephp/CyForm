@@ -368,21 +368,20 @@ class Form implements form\field\FormField {
 
     public function render() {
         $this->before_rendering();
+        $view_data = array(
+            'model' => $this->_model,
+            'fields' => $this->_fields,
+            'show_form_tag' => ! $this->_model->is_subform()
+        );
         try {
             if ( ! class_exists('cyclone\\view\\PHPView')) {
                 require '/media/private/php/cyclonephp/cyclone/classes/cyclone/view/PHPView.php';
             }
             $view = new \cyclone\view\PHPView($this->_model->theme
-                .DIRECTORY_SEPARATOR.$this->_model->view, array(
-                    'model' => $this->_model,
-                    'fields' => $this->_fields
-                ));
+                .DIRECTORY_SEPARATOR.$this->_model->view, $view_data);
         } catch (view\ViewException $ex) {
             $view = new view\PHPView(self::DEFAULT_THEME . DIRECTORY_SEPARATOR
-                    . $this->_model->view, array(
-                    'model' => $this->_model,
-                    'fields' => $this->_fields
-                ));
+                    . $this->_model->view, $view_data);
         }
         return $view->render();
     }
