@@ -122,6 +122,13 @@ class BasicField implements FormField {
         return (string) $this->value;
     }
 
+    protected function get_field_name() {
+        $form_name = $this->_form->_model->name;
+        if ( ! $form_name)
+            return $this->_model->name;
+        return $form_name . '[' . $this->_model->name . ']';
+    }
+
 
     public function get_view_data() {
         $model = $this->_model;
@@ -142,7 +149,7 @@ class BasicField implements FormField {
             $rval['attributes']['disabled'] = 'disabled';
         }
         $rval['attributes']['value'] = $this->value;
-        $rval['attributes']['name'] = $model->name;
+        $rval['attributes']['name'] = $this->get_field_name();
         $rval['attributes']['type'] = $model->type;
 
         if (NULL === $model->view) {
