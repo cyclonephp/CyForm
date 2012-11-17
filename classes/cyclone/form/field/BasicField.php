@@ -122,6 +122,7 @@ class BasicField implements FormField {
         return (string) $this->value;
     }
 
+
     public function get_view_data() {
         $model = $this->_model;
         $rval = array(

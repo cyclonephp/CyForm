@@ -24,6 +24,12 @@ class Model {
 
     public $type = 'subform';
 
+    public $on_empty = array();
+
+    public $on_create;
+
+    public $on_edit;
+
     public $attributes = array(
         'method' => 'post',
         'action' => ''
@@ -38,6 +44,9 @@ class Model {
 
     public $view = 'form';
 
+    /**
+     * @param $name string
+     */
     public function __construct($name) {
         $this->name = $name;
     }
@@ -51,6 +60,10 @@ class Model {
         return $this;
     }
 
+    /**
+     * @param $theme string
+     * @return Model
+     */
     public function theme($theme) {
         $this->theme = $theme;
         return $this;
