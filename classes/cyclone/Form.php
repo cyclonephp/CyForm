@@ -8,8 +8,6 @@ namespace cyclone;
  */
 class Form implements form\field\FormField {
 
-    public function load_data_source(){}
-
     /**
      * @return CyForm_Model
      */
@@ -125,6 +123,12 @@ class Form implements form\field\FormField {
      */
     public function get_field_count() {
         return count($this->_fields);
+    }
+
+    public function load_data_source() {
+        foreach ($this->_fields as $field) {
+            $field->load_data_source();
+        }
     }
 
     /**
