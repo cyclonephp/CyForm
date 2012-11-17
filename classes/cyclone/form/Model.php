@@ -3,6 +3,12 @@
 namespace cyclone\form;
 
 /**
+ * <p>A@c Model instance is the representation of a form model. It has attributes representing
+ * the form and builder methods.</p>
+ *
+ * <p>The @c Model itself is not responsible for handling user input or business data. The model
+ * is used and managed by @c \cyclone\form\Form instances.</p>
+ *
  * @author Bence Eros
  * @package CyForm
  */
@@ -19,13 +25,18 @@ class Model {
         'action' => ''
     );
 
+    /**
+     * The model objects representing the fields of the form.
+     *
+     * @var array<\cyclone\form\model\field\BasicField>
+     */
     public $fields = array();
 
     public $view = 'form';
 
     /**
      * @param $result_type string
-     * @return Model
+     * @return Model <code>$this</code>
      */
     public function result_type($result_type) {
         $this->result_type = $result_type;
