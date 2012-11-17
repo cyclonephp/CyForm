@@ -147,4 +147,8 @@ class Model {
         return $this;
     }
 
+    public function is_subform() {
+        return ! empty($this->name);
+    }
+
 }
