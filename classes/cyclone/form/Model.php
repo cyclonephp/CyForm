@@ -24,17 +24,8 @@ class Model {
     public $view = 'form';
 
     /**
-     * @param string $result_type
-     * @return CyForm_Model
-     */
-    public function result($result_type) {
-        $this->result_type = $result_type;
-        return $this;
-    }
-
-    /**
-     * @param string $result_type
-     * @return CyForm_Model
+     * @param $result_type string
+     * @return Model
      */
     public function result_type($result_type) {
         $this->result_type = $result_type;
@@ -46,19 +37,27 @@ class Model {
         return $this;
     }
 
+    /**
+     * @param $title string
+     * @return Model <code>$this</code>
+     */
     public function title($title) {
         $this->title = $title;
         return $this;
     }
 
+    /**
+     * @param $attributes array
+     * @return Model <code>$this</code>
+     */
     public function attributes($attributes) {
         $this->attributes = $attributes;
         return $this;
     }
 
     /**
-     * @param string $method
-     * @return CyForm_Model
+     * @param $method string
+     * @return Model <code>$this</code>
      */
     public function method($method) {
         $this->attributes['method'] = $method;
@@ -66,8 +65,8 @@ class Model {
     }
 
     /**
-     * @param string $action
-     * @return CyForm_Model
+     * @param $action string
+     * @return Model <code>$this</code>
      */
     public function action($action) {
         $this->attributes['action'] = $action;
@@ -75,9 +74,9 @@ class Model {
     }
 
     /**
-     * @param string $key
-     * @param string $value
-     * @return CyForm_Model
+     * @param $key string
+     * @param $value string
+     * @return Model <code>$this</code>
      */
     public function attribute($key, $value) {
         $this->attributes[$key] = $value;
@@ -85,9 +84,9 @@ class Model {
     }
     
     /**
-     * @param string $key
-     * @param string $value
-     * @return CyForm_Model
+     * @param $key string
+     * @param $value string
+     * @return Model <code>$this</code>
      */
     public function attr($key, $value) {
         $this->attributes[$key] = $value;
@@ -95,8 +94,8 @@ class Model {
     }
 
     /**
-     * @param CyForm_Model_Field $field
-     * @return CyForm_Model
+     * @param \cyclone\form\model\field\BasicField $field
+     * @return Model <code>$this</code>
      */
     public function field(model\field\BasicField $field) {
         if (is_null($field->name)) {
@@ -108,8 +107,8 @@ class Model {
     }
 
     /**
-     * @param string $view
-     * @return CyForm_Model
+     * @param $view string
+     * @return Model <code>$this</code>
      */
     public function view($view) {
         $this->view = $view;
