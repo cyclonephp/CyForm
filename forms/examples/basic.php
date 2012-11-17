@@ -1,9 +1,9 @@
 <?php
 
-use cyclone as cy;
+use cyclone\Form;
 
-return cy\Form::model()
-    ->field(cy\Form::field('name', 'text')
+return Form::model()
+    ->field(Form::field('name', 'text')
         ->validator('not_empty')
         ->validator('regex', array('/[a-z]*/'))
         ->validator('numeric', array(), ':value: invalid number format')
