@@ -13,8 +13,8 @@ class Form implements form\field\FormField {
     /**
      * @return CyForm_Model
      */
-    public static function model() {
-        return new form\Model;
+    public static function model($name = NULL) {
+        return new form\Model($name);
     }
 
     /**
@@ -89,7 +89,7 @@ class Form implements form\field\FormField {
      */
     public function  __construct($model, $load_data_sources = true) {
         if (is_string($model)) {
-            $model = self::get_model($model);
+            $model = static::get_model($model);
         }
 
         if (  ! ($model instanceof form\Model))

@@ -20,6 +20,10 @@ class Model {
 
     public $title;
 
+    public $name;
+
+    public $type = 'subform';
+
     public $attributes = array(
         'method' => 'post',
         'action' => ''
@@ -33,6 +37,10 @@ class Model {
     public $fields = array();
 
     public $view = 'form';
+
+    public function __construct($name) {
+        $this->name = $name;
+    }
 
     /**
      * @param $result_type string
@@ -105,10 +113,10 @@ class Model {
     }
 
     /**
-     * @param \cyclone\form\model\field\BasicField $field
+     * @param \cyclone\form\model\field\BasicField | \cyclone\form\Model $field
      * @return Model <code>$this</code>
      */
-    public function field(model\field\BasicField $field) {
+    public function field($field) {
         if (is_null($field->name)) {
             $this->fields []= $field;
         } else {
