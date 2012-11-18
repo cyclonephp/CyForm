@@ -36,7 +36,8 @@ class DateField extends BasicField {
     }
 
     protected function get_segment_name($segment) {
-        return $this->_model->name. '[' .$this->suffixes[$segment] . ']';
+        return $this->get_field_name($this->_model->name)
+            . '[' .$this->suffixes[$segment] . ']';
     }
 
     public function  set_data($val) {
@@ -66,7 +67,7 @@ class DateField extends BasicField {
             'errors' => $this->validation_errors,
             'label' => $this->_model->label,
             'description' => $this->_model->description,
-            'name' => $this->_model->name
+            'name' => $this->get_field_name($this->_model->name)
         );
 
         if (NULL === $this->_model->view) {

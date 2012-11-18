@@ -18,7 +18,7 @@ class TextareaField extends BasicField {
         $this->model['errors'] = $this->validation_errors;
         
         $this->_model->value = $this->value;
-        $this->_model->attributes['name'] = $this->_model->name;
+        $this->_model->attributes['name'] = $this->get_field_name($this->_model->name);
         if (NULL === $this->_model->view) {
             $this->_model->view = 'textarea';
         }

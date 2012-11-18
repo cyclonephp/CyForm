@@ -28,7 +28,7 @@ class SubmitField extends BasicField {
             'attributes' => $this->_model->attributes
         );
         if ( ! is_null($this->_model->name)) {
-            $rval['attributes']['name'] = $this->_model->name;
+            $rval['attributes']['name'] = $this->get_field_name($this->_model->name);
         }
         $rval['attributes']['value'] = $this->_model->label;
         if (NULL === $this->_model->view) {

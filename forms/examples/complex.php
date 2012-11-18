@@ -45,6 +45,7 @@ return Form::model()->theme('cyform/daffodil')
         )->field(Form::model('mysubform')->title('mysubform')
             ->field(Form::field('subfield1')->label('subfield1'))
             ->field(Form::field('subfield2')->label('subfield2'))
+            ->field(Form::field('subdate', 'date'))
         )->field(Form::field(NULL, 'submit')
                 ->label('Ok'))
 

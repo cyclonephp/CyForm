@@ -80,26 +80,26 @@ class ListField extends BasicField {
 
     public function get_view_data() {
         $rval = array(
-            'attributes' => array(
-                'name' => $this->_model->name
-            ),
+            'attributes' => array(),
             'errors' => $this->_model->validation->errors,
             'label' => $this->_model->label,
             'description' => $this->_model->description,
             'items' => $this->_model->items,
-            'name' => $this->_model->name
+            'name' => $this->get_field_name($this->_model->name)
         );
 
         if ($this->_model->multiple && is_null($this->value)) {
             $this->value = array();
         }
 
+        $field_name = $this->get_field_name($this->_model->name);
         if ($this->_model->multiple) {
-            $rval['attributes']['name'] .= '[]';
+            $field_name .= '[]';
             $rval['values'] = $this->value;
         } else {
             $rval['attributes']['value'] = $this->value;
         }
+        $rval['attributes']['name'] = $field_name;
 
         if (NULL === $this->_model->view) {
             $this->_model->view = 'select';
