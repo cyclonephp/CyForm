@@ -2,7 +2,7 @@
 
 use cyclone\Form;
 
-return Form::model()->theme('cyform/daffodil')
+return Form::model()->theme('cyform/jquery-ui')
         ->title('Complex CyForm example')
         //->action('formtest/ajaxsave')
         ->field(Form::field('name')
