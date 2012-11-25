@@ -3,6 +3,7 @@
 namespace cyclone\form\field;
 
 use cyclone as cy;
+use cyclone\Form;
 
 /**
  * @author Bence Eros <crystal@cyclonephp.org>
@@ -22,7 +23,7 @@ class DateField extends BasicField {
         'day' => null
     );
 
-    public function  __construct(cy\Form $form, $name, cy\form\model\field\BasicField $model, $cfg) {
+    public function  __construct(Form $form, $name, cy\form\model\field\BasicField $model, $cfg) {
         parent::__construct($form, $name, $model, 'date', $cfg);
 
     }
