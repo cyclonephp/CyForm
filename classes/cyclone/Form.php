@@ -421,6 +421,14 @@ class Form implements form\field\FormField {
         }
         return $this;
     }
+
+    /**
+     * @return string the theme of the handled form model
+     * @see \cyclone\form\Model::$theme
+     */
+    public function get_theme() {
+        return $this->_model->theme;
+    }
     
 
     public function  __toString() {

@@ -29,6 +29,9 @@ class SubformField implements FormField {
     public function __construct(Form $form, $name, $model, $cfg) {
         $this->_form = $form;
         $this->_model = $model;
+        if ($this->_model->theme === NULL) {
+            $this->_model->theme = $form->get_theme();
+        }
         $this->_cfg = $cfg;
         $this->_subform = new Form($model);
     }
