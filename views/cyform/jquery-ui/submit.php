@@ -1,0 +1,1 @@
+<input type="submit" <?= \cyclone\HTML::attributes($attributes) ?> />
