@@ -2,6 +2,11 @@
 
 namespace cyclone;
 
+use cyclone\view\ViewException;
+use cyclone\view\PHPView;
+use cyclone\Config;
+use cyclone\AssetPool;
+
 /**
  * @author Bence Eros <crystal@cyclonephp.org>
  * @package CyForm
@@ -9,7 +14,7 @@ namespace cyclone;
 class Form implements form\field\FormField {
 
     /**
-     * @return CyForm_Model
+     * @return \cyclone\form\Model
      */
     public static function model($name = NULL) {
         return new form\Model($name);
@@ -19,7 +24,7 @@ class Form implements form\field\FormField {
      *
      * @param string $type
      * @param string $name
-     * @return CyForm_Model_Field
+     * @return \cyclone\form\model\field\BasicField
      */
     public static function field($name = NULL, $type = 'text') {
         $candidate = '\\cyclone\\form\\model\\field\\' . ucfirst($type) . 'Field';
@@ -31,7 +36,7 @@ class Form implements form\field\FormField {
 
     /**
      * @param callback $callback
-     * @return CyForm_Model_DataSource
+     * @return \cyclone\form\model\DataSource
      */
     public static function source($callback) {
         return new form\model\DataSource($callback);
@@ -39,7 +44,7 @@ class Form implements form\field\FormField {
 
     /**
      * @param string $name
-     * @return CyForm_Model
+     * @return \cyclone\form\Model
      */
     public static function get_model($name) {
         $file = \cyclone\FileSystem::find_file('forms/' . $name . '.php');
@@ -53,14 +58,14 @@ class Form implements form\field\FormField {
      * Used as default view root if a requested template is not found
      * in the view root of the current theme.
      *
-     * @usedby CyForm::render()
-     * @usedby CyForm_Field::render()
+     * @usedby Form::render()
+     * @usedby \cyclone\form\field\FormField::render()
      */
     const DEFAULT_THEME = 'cyform/default';
 
     /**
      *
-     * @var CyForm_Model the model passed to the constructor. Current input values and
+     * @var \cyclone\form\Model the model passed to the constructor. Current input values and
      * error messages are also stored in this array.
      */
     public $_model;
@@ -95,7 +100,7 @@ class Form implements form\field\FormField {
 
         $this->_model = $model;
 
-        $this->_cfg = \cyclone\Config::inst()->get('cyform');
+        $this->_cfg = Config::inst()->get('cyform');
         $this->init($load_data_sources);
         $this->add_assets();
     }
@@ -107,7 +112,7 @@ class Form implements form\field\FormField {
      *
      * @param $name
      * @return  \cyclone\form\field\BasicField
-     * @throws form\Exception
+     * @throws \cyclone\form\Exception
      */
     public function get_field($name) {
         if ( ! isset($this->_fields[$name]))
@@ -162,10 +167,10 @@ class Form implements form\field\FormField {
         }
         $theme = $this->_model->theme;
         try {
-            \cyclone\AssetPool::inst()->add_asset($theme, 'css');
+            AssetPool::inst()->add_asset($theme, 'css');
         } catch (\Exception $ex) {}
         try {
-            \cyclone\AssetPool::inst()->add_asset($theme, 'js');
+            AssetPool::inst()->add_asset($theme, 'js');
         } catch (\Exception $ex) {}
     }
 
@@ -377,11 +382,15 @@ class Form implements form\field\FormField {
             if ( ! class_exists('cyclone\\view\\PHPView')) {
                 require '/media/private/php/cyclonephp/cyclone/classes/cyclone/view/PHPView.php';
             }
-            $view = new \cyclone\view\PHPView($this->_model->theme
+            $view = new PHPView($this->_model->theme
                 .DIRECTORY_SEPARATOR.$this->_model->view, $view_data);
         } catch (view\ViewException $ex) {
-            $view = new view\PHPView(self::DEFAULT_THEME . DIRECTORY_SEPARATOR
+            try {
+                $view = new PHPView(self::DEFAULT_THEME . DIRECTORY_SEPARATOR
                     . $this->_model->view, $view_data);
+            } catch (ViewException $ex) {
+                $view = new PHPView($this->_model->view, $view_data);
+            }
         }
         return $view->render();
     }
