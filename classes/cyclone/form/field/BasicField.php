@@ -3,8 +3,13 @@
 namespace cyclone\form\field;
 
 use cyclone as cy;
+use cyclone\Kohana;
+use cyclone\Arr;
 use cyclone\Form;
-use cyclone\view;
+use cyclone\view\ViewException;
+use cyclone\view\PHPView;
+use cyclone\form\FormException;
+use cyclone\form\model\field\BasicField as Model;
 
 /**
  * @author Bence Eros <crystal@cyclonephp.org>
@@ -48,8 +53,7 @@ class BasicField implements FormField {
      * @param array $model the field definition
      * @param array $cfg same as <code>cyclone\Config::inst()->get('cyform')</code>
      */
-    public function  __construct(Form $form, $name
-            , cy\form\model\field\BasicField $model, $cfg) {
+    public function  __construct(Form $form, $name, Model $model, $cfg) {
         $this->_form = $form;
         $this->_model = $model;
         $this->_cfg = $cfg;
@@ -100,7 +104,7 @@ class BasicField implements FormField {
     public function set_input($src, $saved_data = array()) {
         $this->value = $src;
         if (null === $this->value) {
-            $this->set_data(cy\Arr::get($saved_data, $this->_model->name));
+            $this->set_data(Arr::get($saved_data, $this->_model->name));
         }
         if ('' === $this->value) {
             $this->value = $this->_model->on_empty;
@@ -117,7 +121,7 @@ class BasicField implements FormField {
 
     protected function value_as_string() {
         if (is_array($this->value))
-            throw new cy\form\Exception("cannot convert value of field '{$this->_model->name}' to string");
+            throw new FormException("cannot convert value of field '{$this->_model->name}' to string");
 
         return (string) $this->value;
     }
@@ -167,11 +171,11 @@ class BasicField implements FormField {
     public function render() {
         $view_data = $this->get_view_data();
         try {
-            $view = new view\PHPView($this->_form->_model->theme
+            $view = new PHPView($this->_form->_model->theme
                 .DIRECTORY_SEPARATOR.$this->_model->view,
                 $view_data);
-        } catch (view\ViewException $ex) {
-            $view = new view\PHPView(Form::DEFAULT_THEME . DIRECTORY_SEPARATOR
+        } catch (ViewException $ex) {
+            $view = new PHPView(Form::DEFAULT_THEME . DIRECTORY_SEPARATOR
                     . $this->_model->view, $view_data);
         }
         return $view->render();
@@ -186,7 +190,7 @@ class BasicField implements FormField {
         try {
             return $this->render();
         } catch (\Exception $ex) {
-            cy\Kohana::exception_handler($ex);
+            Kohana::exception_handler($ex);
             return '';
         }
     }

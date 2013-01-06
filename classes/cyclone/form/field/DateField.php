@@ -4,6 +4,7 @@ namespace cyclone\form\field;
 
 use cyclone as cy;
 use cyclone\Form;
+use cyclone\form\FormException;
 
 /**
  * @author Bence Eros <crystal@cyclonephp.org>
@@ -49,7 +50,7 @@ class DateField extends BasicField {
         }
         preg_match($pattern, $val, $matches);
         if (empty($matches))
-            throw new cy\Exception('invalid date format');
+            throw new FormException('invalid date format');
 
         $this->value = array(
             'year' => $matches['year'],

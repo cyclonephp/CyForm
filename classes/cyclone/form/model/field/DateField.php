@@ -2,6 +2,8 @@
 
 namespace cyclone\form\model\field;
 
+use cyclone\form\FormException;
+
 /**
  * @author Bence Eros <crystal@cyclonephp.org>
  * @package cyform
@@ -59,7 +61,7 @@ class DateField extends BasicField {
             || ! (isset($value['year'])
                 && isset($value['month'])
                 && isset($value['day'])))
-            throw new \cyclone\form\Exception("date input default value must be an array with 'year', 'month' and 'day' keys");
+            throw new FormException("date input default value must be an array with 'year', 'month' and 'day' keys");
 
         return parent::value($value);
     }

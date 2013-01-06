@@ -3,7 +3,7 @@
 namespace cyclone;
 
 use cyclone\form\FormModel;
-use cyclone\form\Exception;
+use cyclone\form\FormException;
 
 use cyclone\view\ViewException;
 use cyclone\view\PHPView;
@@ -52,7 +52,7 @@ class Form implements form\field\FormField {
     public static function get_model($name) {
         $file = \cyclone\FileSystem::find_file('forms/' . $name . '.php');
         if (FALSE === $file)
-            throw new form\Exception("form not found: $name");
+            throw new FormException("form not found: $name");
 
         return require $file;
     }
@@ -99,7 +99,7 @@ class Form implements form\field\FormField {
         }
 
         if (  ! ($model instanceof FormModel))
-            throw new Exception('invalid model');
+            throw new FormException('invalid model');
 
         $this->_model = $model;
 
@@ -115,11 +115,11 @@ class Form implements form\field\FormField {
      *
      * @param $name
      * @return  \cyclone\form\field\BasicField
-     * @throws \cyclone\form\Exception
+     * @throws \cyclone\form\FormException
      */
     public function get_field($name) {
         if ( ! isset($this->_fields[$name]))
-            throw new form\Exception("cannot find form field '$name'");
+            throw new FormException("cannot find form field '$name'");
 
         return clone $this->_fields[$name];
     }
@@ -387,7 +387,7 @@ class Form implements form\field\FormField {
             }
             $view = new PHPView($this->_model->theme
                 .DIRECTORY_SEPARATOR.$this->_model->view, $view_data);
-        } catch (view\ViewException $ex) {
+        } catch (ViewException $ex) {
             try {
                 $view = new PHPView(self::DEFAULT_THEME . DIRECTORY_SEPARATOR
                     . $this->_model->view, $view_data);
@@ -428,7 +428,7 @@ class Form implements form\field\FormField {
     public function hide_fields($fields) {
         foreach ($fields as $field_name) {
             if ( ! isset($this->_fields[$field_name]))
-                throw new form\Exception("Can't hide field '$field_name' in the form since it does not exist");
+                throw new FormException("Can't hide field '$field_name' in the form since it does not exist");
             unset($this->_fields[$field_name]);
         }
         return $this;

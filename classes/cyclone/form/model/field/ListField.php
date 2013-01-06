@@ -4,6 +4,8 @@ namespace cyclone\form\model\field;
 
 use cyclone as cy;
 
+use cyclone\form\FormException;
+
 /**
  * @author Bence Eros
  * @package CyForm
@@ -49,10 +51,10 @@ class ListField extends BasicField {
      * The <code>$type</code> attribute of a @c ListField is immutable.
      *
      * @param $type string
-     * @throws \cyclone\form\Exception
+     * @throws \cyclone\form\FormException
      */
     public function type($type) {
-        throw new cy\form\Exception('the type attribute of lists is immutable');
+        throw new FormException('the type attribute of lists is immutable');
     }
 
     /**

@@ -3,6 +3,9 @@
 namespace cyclone\form\field;
 
 use cyclone as cy;
+use cyclone\form\FormException;
+use cyclone\Form;
+use cyclone\form\model\field\BasicField as Model;
 
 /**
  * @author Bence Eros <crystal@cyclonephp.org>
@@ -10,7 +13,7 @@ use cyclone as cy;
  */
 class ListField extends BasicField {
 
-    public function  __construct(cy\Form $form, $name, cy\form\model\field\BasicField $model, $cfg) {
+    public function  __construct(Form $form, $name, Model $model, $cfg) {
         parent::__construct($form, $name, $model, 'list', $cfg);
     }
 
@@ -69,7 +72,7 @@ class ListField extends BasicField {
             $val_texts = array();
             foreach ($this->value as $val) {
                 if ( ! array_key_exists($val, $this->_model->items))
-                    throw new cy\form\Exception("value '$val' exists in current value but is not present in possible item list");
+                    throw new FormException("value '$val' exists in current value but is not present in possible item list");
                 
                 $val_texts []= $this->_model->items[$val];
             }
