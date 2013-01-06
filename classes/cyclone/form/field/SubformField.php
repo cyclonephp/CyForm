@@ -7,7 +7,7 @@ use cyclone\Kohana;
 class SubformField implements FormField {
 
     /**
-     * @var \cyclone\form\Model
+     * @var \cyclone\form\FormModel
      */
     protected $_model;
 

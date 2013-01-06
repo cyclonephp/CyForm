@@ -2,6 +2,9 @@
 
 namespace cyclone;
 
+use cyclone\form\FormModel;
+use cyclone\form\Exception;
+
 use cyclone\view\ViewException;
 use cyclone\view\PHPView;
 use cyclone\Config;
@@ -14,10 +17,10 @@ use cyclone\AssetPool;
 class Form implements form\field\FormField {
 
     /**
-     * @return \cyclone\form\Model
+     * @return \cyclone\form\FormModel
      */
     public static function model($name = NULL) {
-        return new form\Model($name);
+        return new FormModel($name);
     }
 
     /**
@@ -44,7 +47,7 @@ class Form implements form\field\FormField {
 
     /**
      * @param string $name
-     * @return \cyclone\form\Model
+     * @return \cyclone\form\FormModel
      */
     public static function get_model($name) {
         $file = \cyclone\FileSystem::find_file('forms/' . $name . '.php');
@@ -65,7 +68,7 @@ class Form implements form\field\FormField {
 
     /**
      *
-     * @var \cyclone\form\Model the model passed to the constructor. Current input values and
+     * @var \cyclone\form\FormModel the model passed to the constructor. Current input values and
      * error messages are also stored in this array.
      */
     public $_model;
@@ -95,8 +98,8 @@ class Form implements form\field\FormField {
             $model = static::get_model($model);
         }
 
-        if (  ! ($model instanceof form\Model))
-            throw new form\Exception('invalid model');
+        if (  ! ($model instanceof FormModel))
+            throw new Exception('invalid model');
 
         $this->_model = $model;
 
@@ -399,7 +402,7 @@ class Form implements form\field\FormField {
     /**
      * @param array $fields the values should contain the field names to use. The keys are indifferent.
      * @param boolean $consider_order if TRUE then the used fields will be ordered by their keys in $fields
-     * @return CyForm_Model
+     * @return Form
      */
     public function use_fields($fields, $consider_order = FALSE) {
         if ($consider_order) {
@@ -420,7 +423,7 @@ class Form implements form\field\FormField {
 
     /**
      * @param array $fields the values should contain the field names to hide. The keys are indifferent.
-     * @return CyForm_Model
+     * @return Form
      */
     public function hide_fields($fields) {
         foreach ($fields as $field_name) {
@@ -433,7 +436,7 @@ class Form implements form\field\FormField {
 
     /**
      * @return string the theme of the handled form model
-     * @see \cyclone\form\Model::$theme
+     * @see \cyclone\form\FormModel::$theme
      */
     public function get_theme() {
         return $this->_model->theme;

@@ -12,7 +12,7 @@ namespace cyclone\form;
  * @author Bence Eros
  * @package CyForm
  */
-class Model {
+class FormModel {
 
     public $result_type = 'array';
 
@@ -53,7 +53,7 @@ class Model {
 
     /**
      * @param $result_type string
-     * @return Model <code>$this</code>
+     * @return FormModel <code>$this</code>
      */
     public function result_type($result_type) {
         $this->result_type = $result_type;
@@ -62,7 +62,7 @@ class Model {
 
     /**
      * @param $theme string
-     * @return Model
+     * @return FormModel
      */
     public function theme($theme) {
         $this->theme = $theme;
@@ -71,7 +71,7 @@ class Model {
 
     /**
      * @param $title string
-     * @return Model <code>$this</code>
+     * @return FormModel <code>$this</code>
      */
     public function title($title) {
         $this->title = $title;
@@ -80,7 +80,7 @@ class Model {
 
     /**
      * @param $attributes array
-     * @return Model <code>$this</code>
+     * @return FormModel <code>$this</code>
      */
     public function attributes($attributes) {
         $this->attributes = $attributes;
@@ -89,7 +89,7 @@ class Model {
 
     /**
      * @param $method string
-     * @return Model <code>$this</code>
+     * @return FormModel <code>$this</code>
      */
     public function method($method) {
         $this->attributes['method'] = $method;
@@ -98,7 +98,7 @@ class Model {
 
     /**
      * @param $action string
-     * @return Model <code>$this</code>
+     * @return FormModel <code>$this</code>
      */
     public function action($action) {
         $this->attributes['action'] = $action;
@@ -108,7 +108,7 @@ class Model {
     /**
      * @param $key string
      * @param $value string
-     * @return Model <code>$this</code>
+     * @return FormModel <code>$this</code>
      */
     public function attribute($key, $value) {
         $this->attributes[$key] = $value;
@@ -118,7 +118,7 @@ class Model {
     /**
      * @param $key string
      * @param $value string
-     * @return Model <code>$this</code>
+     * @return FormModel <code>$this</code>
      */
     public function attr($key, $value) {
         $this->attributes[$key] = $value;
@@ -127,7 +127,7 @@ class Model {
 
     /**
      * @param \cyclone\form\model\field\BasicField | \cyclone\form\Model $field
-     * @return Model <code>$this</code>
+     * @return FormModel <code>$this</code>
      */
     public function field($field) {
         if (is_null($field->name)) {
@@ -140,13 +140,19 @@ class Model {
 
     /**
      * @param $view string
-     * @return Model <code>$this</code>
+     * @return FormModel <code>$this</code>
      */
     public function view($view) {
         $this->view = $view;
         return $this;
     }
 
+    /**
+     * Determines if this form model is the model of a subform in an other form or not, based
+     * on its <code>name</code> attribute.
+     *
+     * @return boolean
+     */
     public function is_subform() {
         return ! empty($this->name);
     }
