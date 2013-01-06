@@ -22,7 +22,7 @@ class DataSource {
 
     /**
      * @param string $val_field
-     * @return CyForm_Model_DataSource
+     * @return DataSource
      */
     public function val($val_field) {
         $this->val_field = $val_field;
@@ -31,7 +31,7 @@ class DataSource {
 
     /**
      * @param string $text_field
-     * @return CyForm_Model_DataSource
+     * @return DataSource
      */
     public function text($text_field) {
         $this->text_field = $text_field;
@@ -41,7 +41,7 @@ class DataSource {
     /**
      * @param mixed $params
      * @param mixed ...
-     * @return CyForm_Model_DataSource
+     * @return DataSource
      */
     public function params($params) {
         $this->params = func_get_args();
