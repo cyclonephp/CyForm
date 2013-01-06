@@ -83,7 +83,6 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
                             'val2' => 'text2'
                         )))
                 ->field(Form::field(NULL, 'submit'))
-                ->result('stdClass')
         );
 
         $form->set_input(array(
@@ -96,7 +95,6 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
             'name2' => true,
             'name3' => 'val2'
         ));
-        $this->assertInstanceOf('stdClass', $form->get_data('stdClass'));
     }
 
     public function test_on_empty() {
