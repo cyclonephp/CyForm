@@ -4,6 +4,7 @@ namespace cyclone;
 
 use cyclone\form\FormModel;
 use cyclone\form\FormException;
+use cyclone\form\field\SubformField;
 
 use cyclone\view\ViewException;
 use cyclone\view\PHPView;
@@ -93,7 +94,7 @@ class Form implements form\field\FormField {
      * @param mixed $model array or the name of the file under the forms/ dir that contains the model
      * @param boolean $load_data_sources if <code>TRUE</code>, then the data sources are loaded after model loading.
      */
-    public function  __construct($model, $load_data_sources = true) {
+    public function  __construct($model, $load_data_sources = TRUE) {
         if (is_string($model)) {
             $model = static::get_model($model);
         }
@@ -102,7 +103,6 @@ class Form implements form\field\FormField {
             throw new FormException('invalid model');
 
         $this->_model = $model;
-
         $this->_cfg = Config::inst()->get('cyform');
         $this->init($load_data_sources);
         $this->add_assets();
@@ -309,10 +309,10 @@ class Form implements form\field\FormField {
     /**
      * Returns the business data created via the last form input.
      *
-     * @param string $result_type
+     * @param boolean $only_changed
      * @return mixed
      */
-    public function get_data($result_type = 'array') {
+    public function get_data($result_type = 'array', $only_changed = FALSE) {
         $result_type = $this->_model->result_type;
         if ( ! is_null($this->_progress_id)) {
             $saved_data = $this->get_saved_data($this->_progress_id);
@@ -321,13 +321,11 @@ class Form implements form\field\FormField {
             $result = array();
             if (isset($saved_data)) {
                 foreach($saved_data as $k => $v) {
+
                     $result[$k] = $v;
                 }
             }
             foreach ($this->_fields as $name => $field) {
-                // if the key is an integer then it's the hidden input created
-                // for storing the form ID. This value shouldn't be presented in
-                // the business data
                 if ( ! is_int($name)) {
                     $result[$name] = $field->get_data();
                 }
@@ -340,7 +338,6 @@ class Form implements form\field\FormField {
                 }
             }
             foreach ($this->_fields as $name => $field) {
-                // the same here
                 if ( ! is_int($name)) {
                     $result->$name = $field->get_data();
                 }
@@ -434,12 +431,18 @@ class Form implements form\field\FormField {
         return $this;
     }
 
+
+
     /**
      * @return string the theme of the handled form model
      * @see \cyclone\form\FormModel::$theme
      */
     public function get_theme() {
         return $this->_model->theme;
+    }
+
+    public function get_name() {
+        return $this->_model->name;
     }
     
 

@@ -33,7 +33,7 @@ class SubformField implements FormField {
             $this->_model->theme = $form->get_theme();
         }
         $this->_cfg = $cfg;
-        $this->_subform = new Form($model);
+        $this->_subform = new Form($model, TRUE);
     }
 
     public function get_data() {
@@ -59,6 +59,10 @@ class SubformField implements FormField {
 
     public function render() {
         return $this->_subform->render();
+    }
+
+    public function get_field_name() {
+        return $this->_form->get_name() . '[' . $this->_model->name . ']';
     }
 
     public function __toString() {
