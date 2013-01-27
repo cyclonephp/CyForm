@@ -128,10 +128,8 @@ class BasicField implements FormField {
 
     public function get_field_name($field_name) {
         $form_name = $this->_form->get_name();
-        log_debug($this, $this->_model->name . "::get_field_name($field_name)" . $form_name);
         if ($form_name === NULL)
             return $field_name;
-        log_debug($this, 'result: ' . $form_name . '[' . $field_name . ']');
         return $form_name . '[' . $field_name . ']';
     }
 

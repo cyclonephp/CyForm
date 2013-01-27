@@ -65,6 +65,10 @@ class SubformField implements FormField {
         return $this->_form->get_name() . '[' . $this->_model->name . ']';
     }
 
+    public function get_saved_data() {
+        return $this->_form->get_saved_data();
+    }
+
     public function __toString() {
         try {
             return $this->render();

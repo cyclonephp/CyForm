@@ -221,12 +221,11 @@ class Form implements form\field\FormField {
      * @param string $progress_id
      * @return array
      */
-    protected function get_saved_data($progress_id) {
+    public function get_saved_data() {
         $sess_key = $this->_cfg['session_key'];
         if (isset($_SESSION[$sess_key])
-                && isset($_SESSION[$sess_key]['progress'][$progress_id])) {
-            $this->_progress_id = $progress_id;
-            return $_SESSION[$sess_key]['progress'][$progress_id];
+                && isset($_SESSION[$sess_key]['progress'][$this->_progress_id])) {
+            return $_SESSION[$sess_key]['progress'][$this->_progress_id];
         }
         return array();
     }
@@ -278,7 +277,8 @@ class Form implements form\field\FormField {
      */
     public function set_input($src, $validate = true) {
         if (isset($src[$this->_cfg['progress_key']])) {
-            $saved_data = $this->get_saved_data($src[$this->_cfg['progress_key']]);
+            $this->_progress_id = $src[$this->_cfg['progress_key']];
+            $saved_data = $this->get_saved_data();
         } else {
             $saved_data = array();
         }
@@ -321,14 +321,11 @@ class Form implements form\field\FormField {
             $result = array();
             if (isset($saved_data)) {
                 foreach($saved_data as $k => $v) {
-
                     $result[$k] = $v;
                 }
             }
             foreach ($this->_fields as $name => $field) {
-                if ( ! is_int($name)) {
-                    $result[$name] = $field->get_data();
-                }
+                $result[$name] = $field->get_data();
             }
         } else {
             $result = new $result_type;
@@ -338,9 +335,7 @@ class Form implements form\field\FormField {
                 }
             }
             foreach ($this->_fields as $name => $field) {
-                if ( ! is_int($name)) {
-                    $result->$name = $field->get_data();
-                }
+                $result->$name = $field->get_data();
             }
         }
         return $result;

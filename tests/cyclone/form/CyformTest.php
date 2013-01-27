@@ -9,7 +9,7 @@ use cyclone\Form;
 class CyFormTest extends \Kohana_Unittest_TestCase {
 
     /**
-     * @expectedException \cyclone\form\Exception
+     * @expectedException \cyclone\form\FormException
      */
     public function test_constructor() {
         $form1 = new Form('examples/basic');
@@ -92,6 +92,7 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
         ));
         $this->assertEquals((array)$form->get_data(), array(
             'name1' => 'val1',
+            0 => NULL,
             'name2' => true,
             'name3' => 'val2'
         ));
@@ -116,7 +117,7 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
         try {
             $form->get_field('name');
             $this->fail();
-        } catch (Exception $ex) {
+        } catch (FormException $ex) {
 
         }
 
@@ -139,7 +140,7 @@ class CyFormTest extends \Kohana_Unittest_TestCase {
         try {
             $form->get_field('name');
             $this->fail();
-        } catch (Exception $ex) {
+        } catch (FormException $ex) {
 
         }
         $form = new Form(Form::model()
