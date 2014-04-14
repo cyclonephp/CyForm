@@ -53,7 +53,7 @@ class BasicField implements FormField {
      * @param array $model the field definition
      * @param array $cfg same as <code>cyclone\Config::inst()->get('cyform')</code>
      */
-    public function  __construct(Form $form, $name, Model $model, $cfg) {
+    public function  __construct(Form $form, $name, Model $model, array $cfg) {
         $this->_form = $form;
         $this->_model = $model;
         $this->_cfg = $cfg;

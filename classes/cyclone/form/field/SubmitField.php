@@ -12,7 +12,7 @@ use cyclone\Form;
 class SubmitField extends BasicField {
 
     public function  __construct(Form $form, $name, cy\form\model\field\BasicField $model, $cfg) {
-        parent::__construct($form, $name, $model, 'submit', $cfg);
+        parent::__construct($form, $name, $model, $cfg);
     }
 
     public function set_data($val) {

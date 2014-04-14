@@ -11,7 +11,7 @@ use cyclone as cy;
 class TextareaField extends BasicField {
 
     public function  __construct(cy\Form $form, $name, cy\form\model\field\BasicField $model, $cfg) {
-        parent::__construct($form, $name, $model, 'textarea', $cfg);
+        parent::__construct($form, $name, $model, $cfg);
     }
 
     protected function before_rendering() {

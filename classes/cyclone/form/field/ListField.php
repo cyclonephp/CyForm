@@ -14,7 +14,7 @@ use cyclone\form\model\field\BasicField as Model;
 class ListField extends BasicField {
 
     public function  __construct(Form $form, $name, Model $model, $cfg) {
-        parent::__construct($form, $name, $model, 'list', $cfg);
+        parent::__construct($form, $name, $model, $cfg);
     }
 
     public function set_input($src, $saved_data = array()) {

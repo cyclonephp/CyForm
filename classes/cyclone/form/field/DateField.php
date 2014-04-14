@@ -25,7 +25,7 @@ class DateField extends BasicField {
     );
 
     public function  __construct(Form $form, $name, cy\form\model\field\BasicField $model, $cfg) {
-        parent::__construct($form, $name, $model, 'date', $cfg);
+        parent::__construct($form, $name, $model, $cfg);
 
     }
 

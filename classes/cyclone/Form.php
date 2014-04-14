@@ -51,7 +51,7 @@ class Form implements form\field\FormField {
      * @return \cyclone\form\FormModel
      */
     public static function get_model($name) {
-        $file = \cyclone\FileSystem::find_file('forms/' . $name . '.php');
+        $file = FileSystem::get_default()->find_file('forms/' . $name . '.php');
         if (FALSE === $file)
             throw new FormException("form not found: $name");
 
